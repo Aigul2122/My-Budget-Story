@@ -1,0 +1,108 @@
+/* ===== MOBILE ADAPTATION (shared across all pages) ===== */
+@media (max-width: 860px) {
+  .app{
+    display:block;
+  }
+  .sidebar{
+    display:none;
+  }
+  .mobile-brand-header{
+    display:flex !important;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 4px 8px 4px;
+  }
+  .mobile-brand-header .mbh-name{
+    font-family:'Fraunces', serif;
+    font-size:22px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .mobile-brand-header .mbh-icon{
+    font-size:28px;
+  }
+  .bottom-tabbar{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    background:var(--card);
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-around;
+    padding:8px 0 max(8px, env(safe-area-inset-bottom)) 0;
+    z-index:30;
+  }
+  .bottom-tabbar a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+    font-size:12px;
+    color:var(--ink-soft);
+    text-decoration:none;
+    flex:1;
+    padding:4px 0;
+  }
+  .bottom-tabbar a.active{color:var(--green);font-weight:600;}
+  .bottom-tabbar .bt-icon{font-size:20px;}
+  main{
+    padding-bottom:84px !important;
+  }
+  main{
+    padding:20px 16px 40px 16px;
+  }
+  h1{
+    font-size:26px !important;
+  }
+  .top-row{
+    align-items:flex-start !important;
+  }
+  .summary{
+    grid-template-columns:1fr !important;
+  }
+  .breakdown{
+    gap:14px;
+  }
+  .cash-totals{
+    gap:20px !important;
+  }
+  .steps{
+    grid-template-columns:1fr !important;
+  }
+  .op-actions, .dz-options{
+    flex-direction:column;
+  }
+  .op-actions a, .dz-options a{
+    width:100%;
+    justify-content:center;
+    text-align:center;
+  }
+  .op-filters{
+    overflow-x:auto;
+    flex-wrap:nowrap;
+  }
+  .op-table-wrap, .rec-table-wrap, table{
+    overflow-x:auto;
+    display:block;
+  }
+  .op-table, .rec-table{
+    min-width:640px;
+  }
+  .mvp-modal{
+    max-width:100%;
+    padding:22px 18px;
+  }
+  .mvp-row2{
+    grid-template-columns:1fr;
+  }
+  .cap-hero{
+    padding:24px 20px;
+  }
+  .subtabs{
+    overflow-x:auto;
+    flex-wrap:nowrap;
+  }
+  .month-switch{
+    width:100%;
+    justify-content:space-between !important;
+  }
+}
