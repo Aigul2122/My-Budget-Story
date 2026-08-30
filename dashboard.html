@@ -279,16 +279,14 @@
   .currency-badge.KZT{background:var(--ink);}
   .currency-badge.USD{background:#8A9A5B;}
   .currency-badge.EUR{background:#A9B98C;}
-  .cc-name{font-size:14px;color:var(--ink-soft);}
-  .cc-avail{
+  .cc-sub{font-size:14px;color:var(--ink-soft);}
+  .cc-amount{
     font-family:'Fraunces', serif;
-    font-size:24px;
+    font-size:19px;
     font-weight:600;
-    line-height:1.2;
+    display:flex;align-items:center;gap:8px;
   }
-  .cc-avail-label{font-size:12.5px;color:var(--ink-soft);}
-  .cc-sub{font-size:13px;color:var(--ink-soft);margin-top:2px;}
-  .cc-chevron{color:var(--ink-soft);font-size:16px;flex-shrink:0;margin-left:12px;}
+  .cc-chevron{color:var(--ink-soft);font-size:16px;}
 
   /* ===== STACKED: income, then expense, full width ===== */
   .breakdown{
@@ -748,19 +746,15 @@
   const totals = MBS.computeTotalsByCurrency(DATA);
   const activeCurrencies = MBS.existingCurrencies(DATA);
 
-  const CURRENCY_LABELS = { KZT: 'Тенге', USD: 'Доллары', EUR: 'Евро' };
   document.getElementById('currencyCards').innerHTML = activeCurrencies.map(cur => `
     <a class="currency-card" href="kapital.html" style="text-decoration:none;color:inherit;">
       <div class="cc-left">
         <div class="currency-badge ${cur}">${cur}</div>
         <div>
-          <div class="cc-name">${CURRENCY_LABELS[cur] || cur}</div>
-          <div class="cc-avail">${MBS.formatMoney(totals.available[cur] || 0, cur)}</div>
-          <div class="cc-avail-label">Доступно сейчас</div>
-          ${totals.deposits[cur] ? `<div class="cc-sub">На депозитах ${MBS.formatMoney(totals.deposits[cur] || 0, cur)} · Всего ${MBS.formatMoney(totals.total[cur] || 0, cur)}</div>` : ''}
+          <div class="cc-sub">Доступно ${MBS.formatMoney(totals.available[cur] || 0, cur)}${totals.deposits[cur] ? ` · На депозите ${MBS.formatMoney(totals.deposits[cur] || 0, cur)}` : ''}</div>
         </div>
       </div>
-      <span class="cc-chevron">›</span>
+      <div class="cc-amount">${MBS.formatMoney(totals.total[cur] || 0, cur)}<span class="cc-chevron">›</span></div>
     </a>
   `).join('');
 
