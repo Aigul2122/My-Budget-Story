@@ -449,6 +449,13 @@
     color:var(--ink-soft);
     padding:48px 20px;
   }
+  .op-summary-currency{
+    font-size:13px;text-transform:uppercase;letter-spacing:0.04em;
+    color:var(--gold);font-weight:700;
+  }
+  .op-summary-cat td{font-weight:600;}
+  .op-summary-sub td{color:var(--ink-soft);font-size:13px;padding-top:8px;padding-bottom:8px;}
+  .op-summary-sub td:first-child{padding-left:34px;}
   .op-note{
     font-size:14px;
     color:var(--ink-soft);
@@ -512,7 +519,7 @@
 
     <div class="op-table-wrap">
       <table class="op-table">
-        <thead>
+        <thead id="opTableHead">
           <tr>
             <th>Дата</th>
             <th>Тип</th>
@@ -719,11 +726,88 @@
     updateMonthLabel(); renderTable();
   });
 
+  const NORMAL_HEAD = `<tr>
+      <th>Дата</th>
+      <th>Тип</th>
+      <th>Получатель / источник</th>
+      <th>Категория</th>
+      <th>Счёт</th>
+      <th style="text-align:right">Сумма</th>
+      <th></th>
+    </tr>`;
+
+  function renderCategorySummary(txs, type) {
+    const noun = type === 'income' ? 'доходов' : 'расходов';
+    const thead = document.getElementById('opTableHead');
+    const tbody = document.getElementById('opTableBody');
+    thead.innerHTML = `<tr>
+        <th>Категория</th>
+        <th style="text-align:right">Сумма</th>
+        <th style="text-align:right">% от ${noun}</th>
+      </tr>`;
+
+    if (!txs.length) {
+      tbody.innerHTML = `<tr><td colspan="3" class="op-empty">Пока нет ${noun} для этого периода.</td></tr>`;
+      return;
+    }
+
+    const byCurrency = {};
+    txs.forEach(t => {
+      const cur = accountCurrency(t.accountId);
+      const catKey = t.categoryId || '__none__';
+      const sub = t.subcategory || '';
+      byCurrency[cur] = byCurrency[cur] || { total: 0, cats: {} };
+      byCurrency[cur].total += Number(t.amount) || 0;
+      byCurrency[cur].cats[catKey] = byCurrency[cur].cats[catKey] || { total: 0, subs: {} };
+      byCurrency[cur].cats[catKey].total += Number(t.amount) || 0;
+      byCurrency[cur].cats[catKey].subs[sub] = (byCurrency[cur].cats[catKey].subs[sub] || 0) + (Number(t.amount) || 0);
+    });
+
+    const currencies = Object.keys(byCurrency);
+    let html = '';
+    currencies.forEach(cur => {
+      const data = byCurrency[cur];
+      if (currencies.length > 1) {
+        html += `<tr><td colspan="3" class="op-summary-currency" style="padding-top:20px;">${cur}</td></tr>`;
+      }
+      const catRows = Object.entries(data.cats)
+        .map(([catId, catData]) => ({ catId, ...catData }))
+        .sort((a, b) => b.total - a.total);
+      catRows.forEach(row => {
+        const name = row.catId === '__none__' ? 'Без категории' : categoryName(row.catId);
+        const pct = data.total ? Math.round((row.total / data.total) * 1000) / 10 : 0;
+        html += `<tr class="op-summary-cat">
+            <td>${escapeHtml(name)}</td>
+            <td style="text-align:right;">${MBS.formatMoney(row.total, cur)}</td>
+            <td style="text-align:right;">${pct}%</td>
+          </tr>`;
+        const subEntries = Object.entries(row.subs).filter(([sub]) => sub).sort((a, b) => b[1] - a[1]);
+        subEntries.forEach(([sub, amt]) => {
+          const subPct = row.total ? Math.round((amt / row.total) * 1000) / 10 : 0;
+          html += `<tr class="op-summary-sub">
+              <td>${escapeHtml(sub)}</td>
+              <td style="text-align:right;">${MBS.formatMoney(amt, cur)}</td>
+              <td style="text-align:right;">${subPct}% от категории</td>
+            </tr>`;
+        });
+      });
+      html += `<tr class="op-summary-cat"><td>Итого${currencies.length > 1 ? ' ' + cur : ''}</td><td style="text-align:right;">${MBS.formatMoney(data.total, cur)}</td><td></td></tr>`;
+    });
+    tbody.innerHTML = html;
+  }
+
   function renderTable() {
+    const thead = document.getElementById('opTableHead');
     const tbody = document.getElementById('opTableBody');
     let txs = DATA.transactions.slice().sort((a,b) => (b.date||'').localeCompare(a.date||''));
     if (!showAllMonths) txs = txs.filter(t => MBS.monthKey(t.date) === currentMonth);
     if (currentFilter !== 'all') txs = txs.filter(t => t.type === currentFilter);
+
+    if (currentFilter === 'expense' || currentFilter === 'income') {
+      renderCategorySummary(txs, currentFilter);
+      return;
+    }
+    thead.innerHTML = NORMAL_HEAD;
 
     if (!txs.length) {
       tbody.innerHTML = '<tr><td colspan="7" class="op-empty">Операций пока нет для этого периода/фильтра.</td></tr>';
