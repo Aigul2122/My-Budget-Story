@@ -580,7 +580,7 @@
       const wrap = document.getElementById(type === 'income' ? 'incomeCatList' : 'expenseCatList');
       const list = DATA.categories.filter(c => c.type === type);
       if (!list.length) { wrap.innerHTML = '<div class="mvp-empty">Пока нет категорий.</div>'; return; }
-      wrap.innerHTML = list.map(c => {
+      wrap.innerHTML = list.map((c, idx) => {
         const inUse = MBS.categoryInUse(DATA, c.id);
         const otherCats = DATA.categories.filter(o => o.type === type && o.id !== c.id && !o.archived);
         const subs = c.subcategories || [];
@@ -598,6 +598,8 @@
             <div class="cat-row-top">
               <span class="cat-name">${escapeHtml(c.name)}${c.archived ? ' <span class="op-tag">в архиве</span>' : ''}</span>
               <div class="cat-actions">
+                <button class="rec-btn" title="Выше" onclick="moveCat('${c.id}', -1)" ${idx === 0 ? 'disabled' : ''}>↑</button>
+                <button class="rec-btn" title="Ниже" onclick="moveCat('${c.id}', 1)" ${idx === list.length - 1 ? 'disabled' : ''}>↓</button>
                 <button class="rec-btn" onclick="renameCat('${c.id}')">Переименовать</button>
                 <button class="rec-btn" onclick="toggleCatArchive('${c.id}', ${c.archived})">${c.archived ? 'Вернуть' : 'Архив'}</button>
                 <button class="rec-btn" style="border-color:var(--rust);color:var(--rust);" onclick="removeCat('${c.id}')" ${inUse ? 'title="Используется в операциях"' : ''}>Удалить</button>
@@ -632,6 +634,21 @@
 
   window.toggleCatArchive = function (id, archived) {
     MBS.setCategoryArchived(DATA, id, !archived);
+    renderCategories();
+  };
+
+  window.moveCat = function (id, direction) {
+    const cat = DATA.categories.find(c => c.id === id);
+    if (!cat) return;
+    const sameType = DATA.categories.filter(c => c.type === cat.type);
+    const idx = sameType.indexOf(cat);
+    const targetIdx = idx + direction;
+    if (targetIdx < 0 || targetIdx >= sameType.length) return;
+    const other = sameType[targetIdx];
+    const iA = DATA.categories.indexOf(cat);
+    const iB = DATA.categories.indexOf(other);
+    [DATA.categories[iA], DATA.categories[iB]] = [DATA.categories[iB], DATA.categories[iA]];
+    MBS.saveData(DATA);
     renderCategories();
   };
 
