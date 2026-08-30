@@ -584,7 +584,8 @@
           </div>
           <div class="mvp-field">
             <label>Подкатегория</label>
-            <input type="text" id="txSubcategory" placeholder="Необязательно">
+            <select id="txSubcategory"></select>
+            <input type="text" id="txSubcategoryCustom" placeholder="Своя подкатегория" style="display:none;margin-top:8px;">
           </div>
         </div>
         <div class="mvp-field">
@@ -648,6 +649,29 @@
   function fillCategorySelect(sel, type) {
     const list = DATA.categories.filter(c => c.type === type && !c.archived);
     sel.innerHTML = list.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+  }
+
+  function fillSubcategorySelect(categoryId, selected) {
+    const cat = DATA.categories.find(c => c.id === categoryId);
+    const subs = (cat && cat.subcategories) || [];
+    const sel = document.getElementById('txSubcategory');
+    const custom = document.getElementById('txSubcategoryCustom');
+    sel.innerHTML = '<option value="">— не указывать —</option>' +
+      subs.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('') +
+      '<option value="__custom__">Другая (указать)…</option>';
+    if (selected && subs.includes(selected)) {
+      sel.value = selected;
+      custom.style.display = 'none';
+      custom.value = '';
+    } else if (selected) {
+      sel.value = '__custom__';
+      custom.style.display = 'block';
+      custom.value = selected;
+    } else {
+      sel.value = '';
+      custom.style.display = 'none';
+      custom.value = '';
+    }
   }
 
   function categoryName(id) {
@@ -765,6 +789,7 @@
     if (!isTransfer) {
       fillAccountSelect(document.getElementById('txAccount'), true);
       fillCategorySelect(document.getElementById('txCategory'), type);
+      fillSubcategorySelect(document.getElementById('txCategory').value, '');
       document.getElementById('labelAccount').textContent = type === 'income' ? 'На счёт' : 'Со счёта';
       document.getElementById('labelCounterparty').textContent = type === 'income' ? 'Источник' : 'Получатель';
     } else {
@@ -779,6 +804,15 @@
 
   document.getElementById('txObjectPreset').addEventListener('change', function () {
     document.getElementById('txObjectCustom').style.display = this.value === '__custom__' ? 'block' : 'none';
+  });
+
+  document.getElementById('txCategory').addEventListener('change', function () {
+    fillSubcategorySelect(this.value, '');
+  });
+  document.getElementById('txSubcategory').addEventListener('change', function () {
+    const custom = document.getElementById('txSubcategoryCustom');
+    custom.style.display = this.value === '__custom__' ? 'block' : 'none';
+    if (this.value !== '__custom__') custom.value = '';
   });
 
   function openModal(defaultType) {
@@ -812,7 +846,7 @@
     } else {
       document.getElementById('txAccount').value = t.accountId || '';
       document.getElementById('txCategory').value = t.categoryId || '';
-      document.getElementById('txSubcategory').value = t.subcategory || '';
+      fillSubcategorySelect(t.categoryId || '', t.subcategory || '');
       document.getElementById('txCounterparty').value = t.counterparty || '';
       const presetSel = document.getElementById('txObjectPreset');
       const known = Array.from(presetSel.options).some(o => o.value === (t.objectName || ''));
@@ -860,7 +894,8 @@
       const objCustom = document.getElementById('txObjectCustom').value;
       payload.accountId = acc;
       payload.categoryId = document.getElementById('txCategory').value;
-      payload.subcategory = document.getElementById('txSubcategory').value;
+      const subSel = document.getElementById('txSubcategory').value;
+      payload.subcategory = subSel === '__custom__' ? document.getElementById('txSubcategoryCustom').value.trim() : subSel;
       payload.counterparty = document.getElementById('txCounterparty').value;
       payload.objectName = objPreset === '__custom__' ? objCustom.trim() : objPreset;
     }

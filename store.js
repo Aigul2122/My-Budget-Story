@@ -30,16 +30,69 @@
     return (prefix || 'id') + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
   }
 
+  const CATEGORY_SUBCATEGORIES = {
+    income: {
+      'Аренда': ['Кыз Жибек 19', 'Астана Нурсая', 'Парковочные места'],
+      'Депозиты': ['Депозит Kaspi Bank', 'Депозит Halyk Bank'],
+      'Пенсия': ['Пенсия'],
+      'Продажа имущества': [],
+      'Подарки': [],
+      'Прочие источники': []
+    },
+    expense: {
+      'Жильё и недвижимость': [
+        'Электричество и вода (Зелёные холмы)', 'Газ (Зелёные холмы)',
+        'Электричество и вода (Панфилова 92)', 'Газ (Панфилова 92)',
+        'Ремонт — услуги', 'Ремонт — стройматериалы',
+        'Налог на имущество', 'Интернет', 'Сигнализация'
+      ],
+      'Дом и быт': ['Домработница', 'Садовник', 'Полив', 'Бытовая химия', 'Товары для дома', 'Техника', 'Мебель'],
+      'Транспорт': ['Обслуживание', 'Бензин', 'Мойка', 'Парковка', 'Страховка', 'Налог', 'Штрафы', 'Такси'],
+      'Питание': ['Продукты', 'Рестораны'],
+      'Здоровье': ['Врачи', 'Анализы', 'Лекарства'],
+      'Личные расходы': ['Связь', 'Салон', 'Косметолог', 'Одежда', 'Обувь', 'Образование'],
+      'Приложения': ['GPT', 'Gemini', 'Claude', 'Youtube', 'Apple Music', 'Canva', 'CapCut'],
+      'Семья': ['Дети', 'Внуки', 'Подарки', 'Родственники'],
+      'Гольф': ['Green fee', 'Багги', 'Кедди'],
+      'Отдых и развлечения': ['Билеты', 'Отели', 'Экскурсии', 'Мероприятия'],
+      'Долг': [],
+      'Прочее': ['Прочее'],
+      'Непредвиденные расходы': []
+    }
+  };
+
   function defaultCategories() {
-    const income = ['Аренда', 'Депозиты', 'Пенсия', 'Продажа имущества', 'Подарки', 'Прочие источники'];
-    const expense = [
-      'Жильё и недвижимость', 'Дом и быт', 'Транспорт', 'Питание', 'Здоровье',
-      'Личные расходы', 'Приложения', 'Семья', 'Отдых и развлечения', 'Прочее'
-    ];
-    return [
-      ...income.map(name => ({ id: uid('cat'), name, type: 'income', archived: false })),
-      ...expense.map(name => ({ id: uid('cat'), name, type: 'expense', archived: false }))
-    ];
+    const cats = [];
+    Object.entries(CATEGORY_SUBCATEGORIES).forEach(([type, groups]) => {
+      Object.entries(groups).forEach(([name, subcategories]) => {
+        cats.push({ id: uid('cat'), name, type, subcategories: subcategories.slice(), archived: false });
+      });
+    });
+    return cats;
+  }
+
+  // Дополняет уже существующие категории подкатегориями из CATEGORY_SUBCATEGORIES
+  // и добавляет категории, которых ещё нет — не трогая архивные/переименованные
+  // категории и не удаляя ничего, что пользователь уже завёл сам.
+  function applyCategorySubcategories(data) {
+    if (data.categorySubcategoriesVersion === 1) return false;
+    Object.entries(CATEGORY_SUBCATEGORIES).forEach(([type, groups]) => {
+      Object.entries(groups).forEach(([name, subcategories]) => {
+        const existing = data.categories.find(c => c.type === type && c.name === name);
+        if (existing) {
+          const have = Array.isArray(existing.subcategories) ? existing.subcategories : [];
+          existing.subcategories = have.concat(subcategories.filter(s => !have.includes(s)));
+        } else {
+          data.categories.push({ id: uid('cat'), name, type, subcategories: subcategories.slice(), archived: false });
+        }
+      });
+    });
+    data.categories.forEach(c => {
+      if (!Array.isArray(c.subcategories)) c.subcategories = [];
+    });
+    data.categorySubcategoriesVersion = 1;
+    saveData(data);
+    return true;
   }
 
   function defaultData() {
@@ -54,6 +107,7 @@
       if (!Array.isArray(parsed.accounts)) parsed.accounts = [];
       if (!Array.isArray(parsed.transactions)) parsed.transactions = [];
       if (!Array.isArray(parsed.categories) || !parsed.categories.length) parsed.categories = defaultCategories();
+      applyCategorySubcategories(parsed);
       return parsed;
     } catch (e) {
       console.error('MBS: не удалось прочитать localStorage', e);
@@ -116,7 +170,7 @@
 
   function addCategory(data, { name, type }) {
     if (!name || !name.trim()) return { ok: false, reason: 'invalid_name' };
-    data.categories.push({ id: uid('cat'), name: name.trim(), type, archived: false });
+    data.categories.push({ id: uid('cat'), name: name.trim(), type, subcategories: [], archived: false });
     saveData(data);
     return { ok: true };
   }
@@ -337,7 +391,7 @@
 
   global.MBS = {
     CURRENCIES, ACCOUNT_TYPES, OBJECT_PRESETS, REASON_TEXT,
-    uid, loadData, saveData, defaultData, defaultCategories,
+    uid, loadData, saveData, defaultData, defaultCategories, applyCategorySubcategories,
     addAccount, updateAccount, setAccountArchived, deleteAccount, accountHasTransactions,
     addCategory, renameCategory, setCategoryArchived, deleteCategory, categoryInUse,
     canTransfer, addTransaction, updateTransaction, deleteTransaction,
