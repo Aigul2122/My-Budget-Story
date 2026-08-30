@@ -428,11 +428,25 @@
     color:var(--ink-soft);margin:18px 0 6px 0;
   }
   .cat-row{
-    display:flex;justify-content:space-between;align-items:center;
     padding:10px 0;border-bottom:1px solid var(--paper-deep);
   }
+  .cat-row-top{display:flex;justify-content:space-between;align-items:center;}
   .cat-row.archived .cat-name{color:var(--ink-soft);text-decoration:line-through;}
   .cat-actions{display:flex;gap:8px;}
+  .subcat-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .subcat-chip{
+    display:flex;align-items:center;gap:6px;
+    background:var(--paper-deep);border-radius:20px;
+    padding:4px 6px 4px 12px;font-size:13px;
+  }
+  .subcat-chip select{border:none;background:transparent;font-size:12px;color:var(--ink-soft);max-width:130px;}
+  .subcat-chip .subcat-del{
+    border:none;background:none;color:var(--ink-soft);cursor:pointer;
+    font-size:15px;line-height:1;padding:0 4px;
+  }
+  .subcat-add{display:flex;gap:6px;margin-top:10px;max-width:340px;}
+  .subcat-add input{flex:1;font-size:13px;padding:6px 10px;border-radius:8px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);}
+  .subcat-add button{font-size:13px;padding:6px 12px;}
   .backup-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
   .danger-zone{border-color:var(--rust) !important;}
 </style>
@@ -568,13 +582,31 @@
       if (!list.length) { wrap.innerHTML = '<div class="mvp-empty">Пока нет категорий.</div>'; return; }
       wrap.innerHTML = list.map(c => {
         const inUse = MBS.categoryInUse(DATA, c.id);
+        const otherCats = DATA.categories.filter(o => o.type === type && o.id !== c.id && !o.archived);
+        const subs = c.subcategories || [];
+        const subChips = subs.map(s => `
+            <span class="subcat-chip">
+              ${escapeHtml(s)}
+              <select onchange="moveSubcat('${c.id}','${escapeHtml(s).replace(/'/g, "&#39;")}', this.value)">
+                <option value="">→ переместить…</option>
+                ${otherCats.map(o => `<option value="${o.id}">${escapeHtml(o.name)}</option>`).join('')}
+              </select>
+              <button class="subcat-del" title="Удалить подкатегорию" onclick="removeSubcat('${c.id}','${escapeHtml(s).replace(/'/g, "&#39;")}')">×</button>
+            </span>`).join('');
         return `
           <div class="cat-row ${c.archived ? 'archived' : ''}">
-            <span class="cat-name">${escapeHtml(c.name)}${c.archived ? ' <span class="op-tag">в архиве</span>' : ''}</span>
-            <div class="cat-actions">
-              <button class="rec-btn" onclick="renameCat('${c.id}')">Переименовать</button>
-              <button class="rec-btn" onclick="toggleCatArchive('${c.id}', ${c.archived})">${c.archived ? 'Вернуть' : 'Архив'}</button>
-              <button class="rec-btn" style="border-color:var(--rust);color:var(--rust);" onclick="removeCat('${c.id}')" ${inUse ? 'title="Используется в операциях"' : ''}>Удалить</button>
+            <div class="cat-row-top">
+              <span class="cat-name">${escapeHtml(c.name)}${c.archived ? ' <span class="op-tag">в архиве</span>' : ''}</span>
+              <div class="cat-actions">
+                <button class="rec-btn" onclick="renameCat('${c.id}')">Переименовать</button>
+                <button class="rec-btn" onclick="toggleCatArchive('${c.id}', ${c.archived})">${c.archived ? 'Вернуть' : 'Архив'}</button>
+                <button class="rec-btn" style="border-color:var(--rust);color:var(--rust);" onclick="removeCat('${c.id}')" ${inUse ? 'title="Используется в операциях"' : ''}>Удалить</button>
+              </div>
+            </div>
+            <div class="subcat-list">${subChips}</div>
+            <div class="subcat-add">
+              <input type="text" placeholder="Добавить подкатегорию" onkeydown="if(event.key==='Enter'){addSubcat('${c.id}', this); event.preventDefault();}">
+              <button class="rec-btn" onclick="addSubcat('${c.id}', this.previousElementSibling)">+ Добавить</button>
             </div>
           </div>`;
       }).join('');
@@ -606,6 +638,38 @@
   window.removeCat = function (id) {
     const r = MBS.deleteCategory(DATA, id);
     if (!r.ok) { alert(MBS.REASON_TEXT[r.reason] || 'Не удалось удалить.'); return; }
+    renderCategories();
+  };
+
+  window.addSubcat = function (catId, input) {
+    const name = (input.value || '').trim();
+    if (!name) return;
+    const cat = DATA.categories.find(c => c.id === catId);
+    if (!cat) return;
+    if (!Array.isArray(cat.subcategories)) cat.subcategories = [];
+    if (!cat.subcategories.includes(name)) cat.subcategories.push(name);
+    MBS.saveData(DATA);
+    input.value = '';
+    renderCategories();
+  };
+
+  window.removeSubcat = function (catId, sub) {
+    const cat = DATA.categories.find(c => c.id === catId);
+    if (!cat || !Array.isArray(cat.subcategories)) return;
+    cat.subcategories = cat.subcategories.filter(s => s !== sub);
+    MBS.saveData(DATA);
+    renderCategories();
+  };
+
+  window.moveSubcat = function (fromCatId, sub, toCatId) {
+    if (!toCatId) return;
+    const from = DATA.categories.find(c => c.id === fromCatId);
+    const to = DATA.categories.find(c => c.id === toCatId);
+    if (!from || !to) return;
+    from.subcategories = (from.subcategories || []).filter(s => s !== sub);
+    if (!Array.isArray(to.subcategories)) to.subcategories = [];
+    if (!to.subcategories.includes(sub)) to.subcategories.push(sub);
+    MBS.saveData(DATA);
     renderCategories();
   };
 
