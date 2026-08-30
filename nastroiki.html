@@ -587,6 +587,7 @@
         const subChips = subs.map(s => `
             <span class="subcat-chip">
               ${escapeHtml(s)}
+              <button class="subcat-del" title="Переименовать подкатегорию" onclick="renameSubcat('${c.id}','${escapeHtml(s).replace(/'/g, "&#39;")}')">✎</button>
               <select onchange="moveSubcat('${c.id}','${escapeHtml(s).replace(/'/g, "&#39;")}', this.value)">
                 <option value="">→ переместить…</option>
                 ${otherCats.map(o => `<option value="${o.id}">${escapeHtml(o.name)}</option>`).join('')}
@@ -667,6 +668,25 @@
     if (!cat.subcategories.includes(name)) cat.subcategories.push(name);
     MBS.saveData(DATA);
     input.value = '';
+    renderCategories();
+  };
+
+  window.renameSubcat = function (catId, oldName) {
+    const cat = DATA.categories.find(c => c.id === catId);
+    if (!cat) return;
+    const newName = prompt('Новое название подкатегории:', oldName);
+    if (newName === null) return;
+    const trimmed = newName.trim();
+    if (!trimmed || trimmed === oldName) return;
+    if (!Array.isArray(cat.subcategories)) cat.subcategories = [];
+    if (cat.subcategories.includes(trimmed)) { alert('Такая подкатегория уже есть в этой категории.'); return; }
+    const idx = cat.subcategories.indexOf(oldName);
+    if (idx === -1) return;
+    cat.subcategories[idx] = trimmed;
+    DATA.transactions.forEach(t => {
+      if (t.categoryId === catId && t.subcategory === oldName) t.subcategory = trimmed;
+    });
+    MBS.saveData(DATA);
     renderCategories();
   };
 
