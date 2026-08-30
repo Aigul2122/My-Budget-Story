@@ -123,228 +123,46 @@
     color:var(--ink-soft);
     margin-top:6px;
   }
-  .actions{
-    display:flex;
-    gap:12px;
-  }
-  .btn{
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:15px;
-    font-weight:600;
-    padding:12px 20px;
-    border-radius:10px;
-    border:1.5px solid var(--ink);
-    background:transparent;
-    color:var(--ink);
-    cursor:pointer;
-  }
-  .btn.primary{
-    background:var(--ink);
-    color:var(--paper);
-  }
 
-  /* ===== SUMMARY CARDS ===== */
-  .summary{
+  .cap-note{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:16px 20px;margin-bottom:28px;font-size:14px;color:var(--ink-soft);
+  }
+  .cap-note code{background:var(--paper-deep);padding:1px 6px;border-radius:5px;font-size:13px;}
+
+  /* ===== SETUP ROW ===== */
+  .setup-row{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:1fr 1fr;
     gap:20px;
-    margin-bottom:36px;
+    margin-bottom:24px;
   }
-  .card{
+  .field{
     background:var(--card);
     border:1px solid var(--line);
     border-radius:var(--radius);
-    padding:24px 26px;
+    padding:18px 20px;
   }
-  .card-label{
-    font-size:14px;
-    text-transform:uppercase;
-    letter-spacing:0.05em;
-    color:var(--ink-soft);
-    margin-bottom:10px;
-  }
-  .card-value{
-    font-family:'Fraunces', serif;
-    font-size:32px;
-    font-weight:600;
-  }
-  .card-value.income{color:var(--green);}
-  .card-value.expense{color:var(--rust);}
-  .card-note{
-    font-size:14px;
-    color:var(--ink-soft);
-    margin-top:8px;
-  }
-
-  /* ===== STACKED: income, then expense, full width ===== */
-  .breakdown{
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-    margin-bottom:36px;
-  }
-  .panel{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:26px 28px;
-  }
-  .panel h2{
-    font-family:'Fraunces', serif;
-    font-size:22px;
-    font-weight:600;
-    margin:0 0 4px 0;
-  }
-  .panel .panel-sub{
-    font-size:14px;
-    color:var(--ink-soft);
-    margin-bottom:20px;
-  }
-  .bar-row{
-    margin-bottom:16px;
-  }
-  .bar-row:last-child{margin-bottom:0;}
-  .bar-top{
-    display:flex;
-    justify-content:space-between;
-    font-size:15px;
-    margin-bottom:6px;
-  }
-  .bar-name{font-weight:600;}
-  .bar-figs{
-    color:var(--ink-soft);
-    font-variant-numeric:tabular-nums;
-  }
-  .bar-track{
-    height:10px;
-    border-radius:6px;
-    background:var(--paper-deep);
-    overflow:hidden;
-  }
-  .bar-fill{
-    height:100%;
-    border-radius:6px;
-  }
-  .bar-fill.income{background:var(--green);}
-  .bar-fill.expense{background:var(--rust);}
-  .group-label{
-    font-size:13px;
-    text-transform:uppercase;
-    letter-spacing:0.05em;
-    color:var(--gold);
-    font-weight:700;
-    margin:20px 0 10px 0;
-  }
-  .group-label:first-of-type{margin-top:0;}
-  .bar-row.subtotal{
-    margin-bottom:20px;
-    padding-top:4px;
-    border-top:1px solid var(--line);
-  }
-  .bar-row.subtotal .bar-name{color:var(--ink-soft);font-weight:600;}
-  .bar-row.subtotal .bar-figs{font-weight:700;color:var(--ink);}
-
-  /* ===== RECENT TRANSACTIONS ===== */
-  .panel.wide{
-    margin-bottom:36px;
-  }
-  table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:16px;
-  }
-  th{
-    text-align:left;
+  .field label{
+    display:block;
     font-size:13px;
     text-transform:uppercase;
     letter-spacing:0.04em;
     color:var(--ink-soft);
     font-weight:600;
-    padding:0 0 12px 0;
-    border-bottom:1px solid var(--line);
+    margin-bottom:8px;
   }
-  td{
-    padding:14px 0;
-    border-bottom:1px solid var(--paper-deep);
-  }
-  td.who{font-weight:600;}
-  .tag{
-    display:inline-block;
-    padding:4px 10px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:600;
-  }
-  .tag.remont{background:var(--gold-soft);color:#7A5A18;}
-  .tag.salon{background:#EADFF0;color:#6B4A87;}
-  .tag.produkty{background:var(--green-soft);color:var(--green);}
-  .tag.kommunalka{background:#DCE6ED;color:#3D5E73;}
-  .tag.uncat{background:#EFEFEF;color:#888;border:1px dashed #BBB;}
-  td.amount{
-    text-align:right;
-    font-variant-numeric:tabular-nums;
-    font-weight:600;
-  }
-  td.amount.expense{color:var(--rust);}
-  td.amount.income{color:var(--green);}
-  .src{
-    font-size:13px;
-    color:var(--ink-soft);
-  }
-
-  /* ===== UPLOAD ZONE ===== */
-  .upload-zone{
-    border:2px dashed var(--line);
-    border-radius:var(--radius);
-    padding:36px;
-    text-align:center;
-    background:var(--card);
-  }
-  .upload-zone .icon-row{
-    display:flex;
-    justify-content:center;
-    gap:16px;
-    margin-bottom:18px;
-  }
-  .icon-btn{
-    width:56px;height:56px;
-    border-radius:50%;
-    background:var(--paper-deep);
-    display:flex;align-items:center;justify-content:center;
-    font-size:22px;
-  }
-  .upload-zone p{
+  .field select{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif;
     font-size:15px;
-    color:var(--ink-soft);
-    margin:0;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1.5px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
   }
-  .footnote{
-    text-align:center;
-    font-size:13px;
-    color:var(--ink-soft);
-    margin-top:40px;
-  }
-  .add-link{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    font-size:14px;
-    font-weight:600;
-    color:var(--green);
-    text-decoration:none;
-    padding:14px 0 4px 0;
-    margin-top:4px;
-  }
-  .add-link .plus{
-    width:20px;height:20px;
-    border-radius:50%;
-    border:1.5px solid var(--green);
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    font-size:14px;
-    line-height:1;
-  }
+  .field .hint{font-size:13px;color:var(--ink-soft);margin-top:8px;}
 
   /* ===== UPLOAD PAGE ===== */
   .dropzone{
@@ -354,7 +172,10 @@
     padding:48px 32px;
     text-align:center;
     margin-bottom:32px;
+    transition:border-color .15s, background .15s;
   }
+  .dropzone.dragover{border-color:var(--green);background:var(--green-soft);}
+  .dropzone.disabled{opacity:.5;pointer-events:none;}
   .dropzone .dz-icon{font-size:36px;margin-bottom:12px;}
   .dropzone .dz-title{font-family:'Fraunces', serif;font-size:20px;font-weight:600;margin-bottom:6px;}
   .dropzone .dz-sub{font-size:14px;color:var(--ink-soft);margin-bottom:20px;}
@@ -366,6 +187,8 @@
     font-size:14px;font-weight:600;color:var(--ink);
     text-decoration:none;cursor:pointer;
   }
+  .dz-option:hover{border-color:var(--gold);}
+
   .steps{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -389,43 +212,56 @@
   .step p{font-size:13px;color:var(--ink-soft);margin:0;line-height:1.5;}
 
   .preview-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;flex-wrap:wrap;gap:10px;}
-  .example-badge{
-    font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;
-    color:#8a6a1e;background:rgba(184,140,45,0.14);
-    padding:4px 10px;border-radius:20px;
-  }
+  .preview-head h2{font-family:'Fraunces', serif;font-size:22px;margin:0;}
   .rec-table-wrap{
     background:var(--card);
     border:1px solid var(--line);
     border-radius:var(--radius);
     overflow:hidden;
     margin-bottom:20px;
+    overflow-x:auto;
   }
-  .rec-table{width:100%;border-collapse:collapse;}
+  .rec-table{width:100%;border-collapse:collapse;min-width:820px;}
   .rec-table th{
     text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:0.04em;
     color:var(--ink-soft);padding:14px 16px;border-bottom:1px solid var(--line);white-space:nowrap;
   }
-  .rec-table td{padding:14px 16px;border-bottom:1px solid var(--paper-deep);font-size:14px;vertical-align:top;}
+  .rec-table td{padding:12px 16px;border-bottom:1px solid var(--paper-deep);font-size:14px;vertical-align:top;}
+  .rec-table tr.done td{opacity:.45;}
   .status-pill{
     display:inline-flex;align-items:center;gap:5px;
-    font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;
+    font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;
   }
   .status-pill.match{background:rgba(58,107,74,0.12);color:var(--green);}
   .status-pill.new{background:rgba(163,68,50,0.10);color:var(--rust);}
-  .rec-actions{display:flex;gap:8px;}
-  .rec-btn{
-    font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;
-    border:1.5px solid var(--line);background:var(--paper);cursor:pointer;color:var(--ink);
+  .status-pill.done{background:var(--paper-deep);color:var(--ink-soft);}
+  .rec-table select{
+    font-family:'IBM Plex Sans', sans-serif;font-size:13px;padding:6px 8px;border-radius:7px;
+    border:1.5px solid var(--line);background:var(--paper);color:var(--ink);max-width:220px;
   }
-  .rec-btn.confirm{border-color:var(--green);color:var(--green);}
+  .amt-in{color:var(--green);}
+  .amt-out{color:var(--rust);}
   .confirm-all{
-    display:flex;justify-content:flex-end;margin-bottom:36px;
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:36px;gap:16px;flex-wrap:wrap;
   }
-  .confirm-all .rec-btn{padding:10px 22px;font-size:14px;}
+  .rec-btn{
+    font-size:14px;font-weight:600;padding:10px 22px;border-radius:8px;
+    border:1.5px solid var(--green);background:var(--paper);cursor:pointer;color:var(--green);
+  }
+  .rec-btn:disabled{opacity:.4;cursor:not-allowed;}
+  .rec-btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .import-status{font-size:14px;color:var(--ink-soft);}
+  .import-status.ok{color:var(--green);font-weight:600;}
+  .footnote{
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:40px;
+  }
 </style>
 <link rel="stylesheet" href="mvp.css">
 <link rel="stylesheet" href="responsive.css">
+<script src="vendor/xlsx.full.min.js"></script>
 <script src="store.js"></script>
 </head>
 <body>
@@ -439,7 +275,7 @@
     <nav>
       <a class="tab" href="dashboard.html"><span class="num">01</span> Главная</a>
       <a class="tab" href="operatsii.html"><span class="num">02</span> Операции</a>
-      <a class="tab active" href="zagruzka.html"><span class="num">03</span> Загрузка <span class="soon-badge">демо</span></a>
+      <a class="tab active" href="zagruzka.html"><span class="num">03</span> Загрузка</a>
       <a class="tab disabled" href="#" onclick="return false;"><span class="num">04</span> Аналитика <span class="soon-badge">скоро</span></a>
       <a class="tab" href="kapital.html"><span class="num">05</span> Капитал</a>
       <a class="tab" href="nastroiki.html"><span class="num">06</span> Настройки</a>
@@ -451,23 +287,40 @@
   <main>
     <div class="top-row">
       <div>
-        <h1>Загрузка <span class="soon-badge" style="vertical-align:middle;">демонстрационный экран</span></h1>
-        <div class="period">Показывает, как будет работать распознавание — реальный импорт файлов пока не подключён</div>
+        <h1>Загрузка выписки</h1>
+        <div class="period">Excel (.xlsx) или CSV — операции разбираются прямо в браузере, ничего никуда не отправляется</div>
       </div>
     </div>
 
-    <div class="cap-note" style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:28px;">
-      Это демонстрация сценария «загрузили → распознали → подтвердили». Настоящее распознавание чеков и выписок будет добавлено отдельным шагом; загруженные здесь файлы пока никуда не сохраняются.
+    <div class="cap-note">
+      Ожидаемые столбцы: <code>Дата</code>, <code>Сумма</code>, <code>Получатель/источник</code>, <code>Категория</code>, необязательно <code>Подкатегория</code> и последней колонкой — комментарий/пометка.
+      Строку «Перевод» в столбце «Категория» приложение распознаёт как перевод между вашими счетами.
     </div>
 
-    <div class="dropzone">
+    <div class="setup-row">
+      <div class="field">
+        <label for="setupAccount">Счёт, к которому относится выписка</label>
+        <select id="setupAccount"></select>
+        <div class="hint" id="accountHint"></div>
+      </div>
+      <div class="field">
+        <label for="setupTransferAccount">Второй счёт для переводов (если есть строки «Перевод»)</label>
+        <select id="setupTransferAccount">
+          <option value="">— не выбрано —</option>
+        </select>
+        <div class="hint">Можно выбрать позже, прямо в таблице — по каждой строке отдельно.</div>
+      </div>
+    </div>
+
+    <div class="dropzone" id="dropzone">
       <div class="dz-icon">📥</div>
       <div class="dz-title">Перетащите файл сюда</div>
-      <div class="dz-sub">Или выберите вариант ниже — фото чека, PDF- или Excel-выписка любого банка</div>
+      <div class="dz-sub">.xlsx, .xls или .csv</div>
       <div class="dz-options">
-        <a class="dz-option" href="#">📷 Сфотографировать чек</a>
-        <a class="dz-option" href="#">📄 Загрузить PDF</a>
-        <a class="dz-option" href="#">📊 Загрузить Excel-выписку</a>
+        <label class="dz-option" style="cursor:pointer;">
+          📊 Выбрать файл
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none;">
+        </label>
       </div>
     </div>
 
@@ -475,75 +328,48 @@
       <div class="step">
         <div class="step-num">1</div>
         <h3>Загрузка</h3>
-        <p>Вы прикладываете файл — из любого банка, в любом из поддерживаемых форматов.</p>
+        <p>Вы прикладываете файл со строками операций — дата, сумма, получатель, категория.</p>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <h3>Предварительное распознавание</h3>
-        <p>Приложение находит дату, сумму и получателя. Если получатель уже встречался — категория подставляется сама.</p>
+        <h3>Разбор</h3>
+        <p>Приложение находит дату, сумму, получателя и категорию. Новые категории создаются автоматически, недостающие нужно выбрать вручную.</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>Проверка и подтверждение</h3>
-        <p>Вы просматриваете список, поправляете, если нужно, и подтверждаете — только после этого операции попадают в «Операции».</p>
+        <h3>Подтверждение</h3>
+        <p>Вы просматриваете список, поправляете, если нужно, и подтверждаете — операции попадают в «Операции» только после этого.</p>
       </div>
     </div>
 
-    <div class="preview-head">
-      <h2 style="font-family:'Fraunces', serif;font-size:22px;margin:0;">Что вы увидите после загрузки</h2>
-      <span class="example-badge">Пример экрана, не ваши данные</span>
+    <div id="previewSection" style="display:none;">
+      <div class="preview-head">
+        <h2>Что нашлось в файле</h2>
+        <span class="import-status" id="importStatus"></span>
+      </div>
+
+      <div class="rec-table-wrap">
+        <table class="rec-table">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Получатель / источник</th>
+              <th style="text-align:right">Сумма</th>
+              <th>Категория</th>
+              <th>Статус</th>
+            </tr>
+          </thead>
+          <tbody id="previewBody"></tbody>
+        </table>
+      </div>
+
+      <div class="confirm-all">
+        <span class="import-status" id="confirmSummary"></span>
+        <button class="rec-btn primary" id="confirmBtn">Подтвердить и добавить →</button>
+      </div>
     </div>
 
-    <div class="rec-table-wrap">
-      <table class="rec-table">
-        <thead>
-          <tr>
-            <th>Дата</th>
-            <th>Получатель / источник</th>
-            <th style="text-align:right">Сумма</th>
-            <th>Предложенная категория</th>
-            <th>Статус</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>18 авг</td>
-            <td>«Садовник Андрей»</td>
-            <td style="text-align:right">− 35 000 ₸</td>
-            <td>Дом и быт → Садовник</td>
-            <td><span class="status-pill match">✓ по имени получателя</span></td>
-            <td class="rec-actions"><button class="rec-btn confirm">Подтвердить</button><button class="rec-btn">Изменить</button></td>
-          </tr>
-          <tr>
-            <td>17 авг</td>
-            <td>«ИП Батыров Н.»</td>
-            <td style="text-align:right">− 15 000 ₸</td>
-            <td>— выберите категорию —</td>
-            <td><span class="status-pill new">⚠ новый получатель</span></td>
-            <td class="rec-actions"><button class="rec-btn">Выбрать категорию</button></td>
-          </tr>
-          <tr>
-            <td>16 авг</td>
-            <td>Kaspi Gold → Депозит</td>
-            <td style="text-align:right">120 000 ₸</td>
-            <td>Перевод (не влияет на доход/расход)</td>
-            <td><span class="status-pill match">✓ распознано как перевод</span></td>
-            <td class="rec-actions"><button class="rec-btn confirm">Подтвердить</button><button class="rec-btn">Изменить</button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="confirm-all">
-      <button class="rec-btn confirm">Подтвердить все распознанные →</button>
-    </div>
-
-    <div class="op-note" style="margin-top:0;">
-      После подтверждения операции попадают в раздел «Операции», откуда обновляются Главная, «Аналитика» и остатки в «Капитале». Новых получателей нужно один раз отметить категорией — дальше приложение подставляет её само.
-    </div>
-
-    <div class="footnote">My Budget Story · макет для обсуждения · раздел «Загрузка»</div>
+    <div class="footnote">My Budget Story · раздел «Загрузка»</div>
   </main>
   <nav class="bottom-tabbar">
     <a href="dashboard.html" class=""><span class="bt-icon">🏠</span>Главная</a>
@@ -555,5 +381,330 @@
   </nav>
 
 </div>
+
+<script>
+  let DATA = MBS.loadData();
+
+  const setupAccount = document.getElementById('setupAccount');
+  const setupTransferAccount = document.getElementById('setupTransferAccount');
+  const accountHint = document.getElementById('accountHint');
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('fileInput');
+  const previewSection = document.getElementById('previewSection');
+  const previewBody = document.getElementById('previewBody');
+  const importStatus = document.getElementById('importStatus');
+  const confirmBtn = document.getElementById('confirmBtn');
+  const confirmSummary = document.getElementById('confirmSummary');
+
+  let rows = []; // parsed rows, working state
+
+  function fillAccountSelects() {
+    const activeAccounts = DATA.accounts.filter(a => !a.archived);
+    if (!activeAccounts.length) {
+      setupAccount.innerHTML = '<option value="">— сначала добавьте счёт —</option>';
+      accountHint.textContent = 'В разделе «Капитал → Деньги» добавьте хотя бы один счёт, потом вернитесь сюда.';
+      dropzone.classList.add('disabled');
+      return;
+    }
+    accountHint.textContent = '';
+    dropzone.classList.remove('disabled');
+    setupAccount.innerHTML = activeAccounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('');
+    setupTransferAccount.innerHTML = '<option value="">— не выбрано —</option>' +
+      activeAccounts.map(a => `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join('');
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function findCategoryId(type, name) {
+    if (!name) return null;
+    const norm = name.trim().toLowerCase();
+    const found = DATA.categories.find(c => c.type === type && !c.archived && c.name.trim().toLowerCase() === norm);
+    return found ? found.id : null;
+  }
+
+  function ensureCategory(type, name) {
+    const existing = findCategoryId(type, name);
+    if (existing) return existing;
+    const trimmed = name.trim();
+    MBS.addCategory(DATA, { name: trimmed, type });
+    DATA = MBS.loadData();
+    return findCategoryId(type, trimmed);
+  }
+
+  function ensureSubcategory(categoryId, subcat) {
+    if (!categoryId || !subcat) return;
+    const cat = DATA.categories.find(c => c.id === categoryId);
+    if (cat && !cat.subcategories.includes(subcat)) {
+      cat.subcategories.push(subcat);
+      MBS.saveData(DATA);
+    }
+  }
+
+  // ---------- file parsing ----------
+
+  function normHeader(h) {
+    return String(h || '').trim().toLowerCase();
+  }
+
+  function pickColumns(headerRow) {
+    const map = {};
+    headerRow.forEach((h, i) => {
+      const n = normHeader(h);
+      if (n.includes('дата')) map.date = i;
+      else if (n.includes('сумма')) map.amount = i;
+      else if (n.includes('получател') || n.includes('источник')) map.counterparty = i;
+      else if (n.includes('подкатег')) map.subcategory = i;
+      else if (n.includes('категор')) map.category = i;
+      else if (map.comment === undefined) map.comment = i; // last unrecognized column -> comment
+    });
+    return map;
+  }
+
+  function parseAmount(v) {
+    if (typeof v === 'number') return v;
+    let s = String(v == null ? '' : v).trim();
+    s = s.replace(/[^\d,.\-]/g, '').replace(/\s/g, '');
+    if (s.includes(',') && s.includes('.')) s = s.replace(/,/g, '');
+    else s = s.replace(',', '.');
+    const n = parseFloat(s);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function parseDate(v) {
+    if (v instanceof Date) return v.toISOString().slice(0, 10);
+    const s = String(v == null ? '' : v).trim();
+    let m = s.match(/^(\d{1,2})[.\/](\d{1,2})[.\/](\d{2,4})$/);
+    if (m) {
+      let [, d, mo, y] = m;
+      if (y.length === 2) y = '20' + y;
+      return `${y}-${mo.padStart(2, '0')}-${d.padStart(2, '0')}`;
+    }
+    m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (m) return `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}`;
+    return s;
+  }
+
+  function rowsFromSheetArray(arr) {
+    if (!arr.length) return [];
+    const cols = pickColumns(arr[0]);
+    if (cols.date === undefined || cols.amount === undefined) {
+      throw new Error('Не нашёл колонки «Дата» и «Сумма» в первой строке файла.');
+    }
+    const out = [];
+    for (let i = 1; i < arr.length; i++) {
+      const r = arr[i];
+      if (!r || r.every(c => c === null || c === undefined || c === '')) continue;
+      const dateRaw = r[cols.date];
+      const amountRaw = r[cols.amount];
+      if (dateRaw == null || amountRaw == null || amountRaw === '') continue;
+      out.push({
+        date: parseDate(dateRaw),
+        amount: parseAmount(amountRaw),
+        counterparty: cols.counterparty !== undefined ? String(r[cols.counterparty] || '').trim() : '',
+        categoryName: cols.category !== undefined ? String(r[cols.category] || '').trim() : '',
+        subcategory: cols.subcategory !== undefined ? String(r[cols.subcategory] || '').trim() : '',
+        comment: cols.comment !== undefined ? String(r[cols.comment] || '').trim() : '',
+      });
+    }
+    return out;
+  }
+
+  function parseCSV(text) {
+    text = text.replace(/^﻿/, '');
+    const lines = text.split(/\r\n|\n|\r/).filter(l => l.length);
+    if (!lines.length) return [];
+    const delim = (lines[0].match(/;/g) || []).length >= (lines[0].match(/,/g) || []).length ? ';' : ',';
+    const splitLine = (line) => {
+      const cells = []; let cur = ''; let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (inQuotes) {
+          if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+          else if (ch === '"') inQuotes = false;
+          else cur += ch;
+        } else {
+          if (ch === '"') inQuotes = true;
+          else if (ch === delim) { cells.push(cur); cur = ''; }
+          else cur += ch;
+        }
+      }
+      cells.push(cur);
+      return cells;
+    };
+    return lines.map(splitLine);
+  }
+
+  function handleFile(file) {
+    const name = file.name.toLowerCase();
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        let arr;
+        if (name.endsWith('.csv')) {
+          arr = parseCSV(reader.result);
+        } else {
+          const wb = XLSX.read(reader.result, { type: 'array', cellDates: true });
+          const sheet = wb.Sheets[wb.SheetNames[0]];
+          arr = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true, defval: '' });
+        }
+        const parsed = rowsFromSheetArray(arr);
+        if (!parsed.length) {
+          alert('Не нашёл ни одной строки с операциями в файле.');
+          return;
+        }
+        buildPreview(parsed);
+      } catch (err) {
+        alert('Не удалось прочитать файл: ' + err.message);
+      }
+    };
+    if (name.endsWith('.csv')) reader.readAsText(file, 'utf-8');
+    else reader.readAsArrayBuffer(file);
+  }
+
+  // ---------- preview + confirm ----------
+
+  function buildPreview(parsed) {
+    const mainAccountId = setupAccount.value;
+    const transferAccountId = setupTransferAccount.value;
+    rows = parsed.map(p => {
+      const isTransfer = p.categoryName.trim().toLowerCase() === 'перевод';
+      const row = { raw: p, done: false };
+      if (isTransfer) {
+        row.type = 'transfer';
+        row.amount = Math.abs(p.amount);
+        if (p.amount >= 0) { row.fromAccountId = transferAccountId || ''; row.toAccountId = mainAccountId; }
+        else { row.fromAccountId = mainAccountId; row.toAccountId = transferAccountId || ''; }
+      } else {
+        row.type = p.amount >= 0 ? 'income' : 'expense';
+        row.amount = Math.abs(p.amount);
+        row.accountId = mainAccountId;
+        row.categoryName = p.categoryName;
+        row.categoryId = p.categoryName ? findCategoryId(row.type, p.categoryName) : null;
+      }
+      return row;
+    });
+    previewSection.style.display = '';
+    renderPreview();
+  }
+
+  function categoryOptionsFor(type) {
+    return DATA.categories.filter(c => c.type === type && !c.archived)
+      .map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+  }
+
+  function accountOptionsFor(selectedId) {
+    return DATA.accounts.filter(a => !a.archived)
+      .map(a => `<option value="${a.id}" ${a.id === selectedId ? 'selected' : ''}>${escapeHtml(a.name)}</option>`).join('');
+  }
+
+  function renderPreview() {
+    previewBody.innerHTML = rows.map((row, idx) => {
+      if (row.done) {
+        return `<tr class="done"><td>${row.raw.date}</td><td>${escapeHtml(row.raw.counterparty)}</td>` +
+          `<td style="text-align:right">${row.amount.toLocaleString('ru-RU')}</td><td>—</td>` +
+          `<td><span class="status-pill done">✓ добавлено</span></td></tr>`;
+      }
+      const amtClass = row.type === 'expense' ? 'amt-out' : 'amt-in';
+      const amtSign = row.type === 'expense' ? '− ' : '+ ';
+      let catCell, statusCell;
+      if (row.type === 'transfer') {
+        const resolved = row.fromAccountId && row.toAccountId && row.fromAccountId !== row.toAccountId;
+        catCell = `Перевод: <select data-idx="${idx}" data-field="transferAccount">
+            <option value="">— выберите счёт —</option>${accountOptionsFor(row.amount >= 0 ? row.toAccountId : row.fromAccountId)}</select>`;
+        statusCell = resolved
+          ? '<span class="status-pill match">✓ перевод</span>'
+          : '<span class="status-pill new">⚠ нужен счёт</span>';
+      } else if (row.categoryId) {
+        catCell = escapeHtml(row.categoryName) + (row.raw.subcategory ? `<div style="font-size:12px;color:var(--ink-soft);">${escapeHtml(row.raw.subcategory)}</div>` : '');
+        statusCell = '<span class="status-pill match">✓ категория найдена</span>';
+      } else if (row.categoryName) {
+        catCell = `${escapeHtml(row.categoryName)} <span style="font-size:12px;color:var(--gold);">(новая, будет создана)</span>`;
+        statusCell = '<span class="status-pill new">＋ новая категория</span>';
+      } else {
+        catCell = `<select data-idx="${idx}" data-field="category">
+            <option value="">— выберите категорию —</option>${categoryOptionsFor(row.type)}</select>`;
+        statusCell = '<span class="status-pill new">⚠ нужна категория</span>';
+      }
+      return `<tr>
+          <td>${row.raw.date}</td>
+          <td>${escapeHtml(row.raw.counterparty)}${row.raw.comment ? `<div style="font-size:12px;color:var(--ink-soft);">${escapeHtml(row.raw.comment)}</div>` : ''}</td>
+          <td style="text-align:right" class="${amtClass}">${amtSign}${row.amount.toLocaleString('ru-RU')}</td>
+          <td>${catCell}</td>
+          <td>${statusCell}</td>
+        </tr>`;
+    }).join('');
+
+    previewBody.querySelectorAll('select[data-field="category"]').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const idx = Number(sel.dataset.idx);
+        rows[idx].categoryId = sel.value || null;
+        renderPreview();
+      });
+    });
+    previewBody.querySelectorAll('select[data-field="transferAccount"]').forEach(sel => {
+      sel.addEventListener('change', () => {
+        const idx = Number(sel.dataset.idx);
+        const row = rows[idx];
+        if (row.amount >= 0) row.toAccountId = sel.value; else row.fromAccountId = sel.value;
+        renderPreview();
+      });
+    });
+
+    const pending = rows.filter(r => !r.done);
+    const ready = pending.filter(r => r.type === 'transfer'
+      ? (r.fromAccountId && r.toAccountId && r.fromAccountId !== r.toAccountId)
+      : (r.categoryId || r.categoryName));
+    confirmSummary.textContent = `Готово к добавлению: ${ready.length} из ${pending.length}`;
+    confirmBtn.disabled = ready.length === 0;
+    confirmBtn.textContent = `Подтвердить и добавить ${ready.length} →`;
+  }
+
+  confirmBtn.addEventListener('click', () => {
+    let added = 0, skipped = 0;
+    rows.forEach(row => {
+      if (row.done) return;
+      if (row.type === 'transfer') {
+        if (!row.fromAccountId || !row.toAccountId || row.fromAccountId === row.toAccountId) { skipped++; return; }
+        const res = MBS.addTransaction(DATA, {
+          type: 'transfer', date: row.raw.date, amount: row.amount,
+          fromAccountId: row.fromAccountId, toAccountId: row.toAccountId, comment: row.raw.comment || '',
+        });
+        if (res.ok) { row.done = true; added++; } else skipped++;
+      } else {
+        let categoryId = row.categoryId;
+        if (!categoryId && row.categoryName) categoryId = ensureCategory(row.type, row.categoryName);
+        if (!categoryId) { skipped++; return; }
+        if (row.raw.subcategory) ensureSubcategory(categoryId, row.raw.subcategory);
+        const res = MBS.addTransaction(DATA, {
+          type: row.type, date: row.raw.date, amount: row.amount, accountId: row.accountId,
+          categoryId, subcategory: row.raw.subcategory || '', counterparty: row.raw.counterparty || '',
+          objectName: '', comment: row.raw.comment || '',
+        });
+        if (res.ok) { row.done = true; added++; } else skipped++;
+      }
+    });
+    DATA = MBS.loadData();
+    renderPreview();
+    importStatus.textContent = `Добавлено: ${added}${skipped ? `, пропущено: ${skipped}` : ''}.`;
+    importStatus.className = 'import-status ok';
+  });
+
+  // ---------- drag & drop wiring ----------
+
+  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length) handleFile(fileInput.files[0]);
+  });
+
+  fillAccountSelects();
+</script>
 </body>
 </html>
