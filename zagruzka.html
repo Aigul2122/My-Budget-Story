@@ -574,7 +574,8 @@
       if (isTransfer) {
         row.type = 'transfer';
         row.amount = Math.abs(p.amount);
-        if (p.amount >= 0) { row.fromAccountId = transferAccountId || ''; row.toAccountId = mainAccountId; }
+        row.direction = p.amount >= 0 ? 'in' : 'out'; // in = деньги приходят на mainAccountId, out = уходят с него
+        if (row.direction === 'in') { row.fromAccountId = transferAccountId || ''; row.toAccountId = mainAccountId; }
         else { row.fromAccountId = mainAccountId; row.toAccountId = transferAccountId || ''; }
       } else {
         row.type = p.amount >= 0 ? 'income' : 'expense';
@@ -594,8 +595,8 @@
       .map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
   }
 
-  function accountOptionsFor(selectedId) {
-    return DATA.accounts.filter(a => !a.archived)
+  function accountOptionsFor(selectedId, excludeId) {
+    return DATA.accounts.filter(a => !a.archived && a.id !== excludeId)
       .map(a => `<option value="${a.id}" ${a.id === selectedId ? 'selected' : ''}>${escapeHtml(a.name)}</option>`).join('');
   }
 
@@ -606,13 +607,15 @@
           `<td style="text-align:right">${row.amount.toLocaleString('ru-RU')}</td><td>—</td>` +
           `<td><span class="status-pill done">✓ добавлено</span></td></tr>`;
       }
-      const amtClass = row.type === 'expense' ? 'amt-out' : 'amt-in';
-      const amtSign = row.type === 'expense' ? '− ' : '+ ';
+      const isOut = row.type === 'expense' || (row.type === 'transfer' && row.direction === 'out');
+      const amtClass = isOut ? 'amt-out' : 'amt-in';
+      const amtSign = isOut ? '− ' : '+ ';
       let catCell, statusCell;
       if (row.type === 'transfer') {
+        const otherAccountId = row.direction === 'in' ? row.fromAccountId : row.toAccountId;
         const resolved = row.fromAccountId && row.toAccountId && row.fromAccountId !== row.toAccountId;
         catCell = `Перевод: <select data-idx="${idx}" data-field="transferAccount">
-            <option value="">— выберите счёт —</option>${accountOptionsFor(row.amount >= 0 ? row.toAccountId : row.fromAccountId)}</select>`;
+            <option value="">— выберите счёт —</option>${accountOptionsFor(otherAccountId, row.direction === 'in' ? row.toAccountId : row.fromAccountId)}</select>`;
         statusCell = resolved
           ? '<span class="status-pill match">✓ перевод</span>'
           : '<span class="status-pill new">⚠ нужен счёт</span>';
@@ -647,7 +650,7 @@
       sel.addEventListener('change', () => {
         const idx = Number(sel.dataset.idx);
         const row = rows[idx];
-        if (row.amount >= 0) row.toAccountId = sel.value; else row.fromAccountId = sel.value;
+        if (row.direction === 'in') row.fromAccountId = sel.value; else row.toAccountId = sel.value;
         renderPreview();
       });
     });
