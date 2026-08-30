@@ -770,9 +770,10 @@
       if (currencies.length > 1) {
         html += `<tr><td colspan="3" class="op-summary-currency" style="padding-top:20px;">${cur}</td></tr>`;
       }
+      const catOrder = catId => catId === '__none__' ? Infinity : DATA.categories.findIndex(c => c.id === catId);
       const catRows = Object.entries(data.cats)
         .map(([catId, catData]) => ({ catId, ...catData }))
-        .sort((a, b) => b.total - a.total);
+        .sort((a, b) => catOrder(a.catId) - catOrder(b.catId));
       catRows.forEach(row => {
         const name = row.catId === '__none__' ? 'Без категории' : categoryName(row.catId);
         const pct = data.total ? Math.round((row.total / data.total) * 1000) / 10 : 0;

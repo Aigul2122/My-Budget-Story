@@ -668,15 +668,16 @@
       if (!byCategory[key]) byCategory[key] = {};
       byCategory[key][cur] = (byCategory[key][cur] || 0) + (Number(t.amount) || 0);
     });
+    const catOrder = catId => catId === '__none__' ? Infinity : DATA.categories.findIndex(c => c.id === catId);
     const rows = Object.entries(byCategory).map(([catId, totals]) => ({
+      catId,
       name: catId === '__none__' ? 'Без категории' : catName(catId),
       totals,
       maxAmount: Math.max(...Object.values(totals))
     }));
-    rows.sort((a, b) => b.maxAmount - a.maxAmount);
-    const top = rows.slice(0, 6);
-    const overallMax = Math.max(...top.map(r => r.maxAmount), 1);
-    el.innerHTML = top.map(r => {
+    rows.sort((a, b) => catOrder(a.catId) - catOrder(b.catId));
+    const overallMax = Math.max(...rows.map(r => r.maxAmount), 1);
+    el.innerHTML = rows.map(r => {
       const figs = MBS.CURRENCIES.filter(c => r.totals[c]).map(c => MBS.formatMoney(r.totals[c], c)).join(' + ');
       const pct = Math.max(4, Math.round((r.maxAmount / overallMax) * 100));
       return `<div class="bar-row">
@@ -684,9 +685,6 @@
           <div class="bar-track"><div class="bar-fill ${type}" style="width:${pct}%;"></div></div>
         </div>`;
     }).join('');
-    if (rows.length > top.length) {
-      el.innerHTML += `<div style="font-size:13px;color:var(--ink-soft);margin-top:4px;">и ещё ${rows.length - top.length} категори${rows.length - top.length === 1 ? 'я' : 'и'} — см. «Операции»</div>`;
-    }
   }
 
   function renderMonth() {
