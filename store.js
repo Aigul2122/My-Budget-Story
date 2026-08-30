@@ -390,7 +390,7 @@
   }
 
   global.MBS = {
-    CURRENCIES, ACCOUNT_TYPES, OBJECT_PRESETS, REASON_TEXT,
+    STORAGE_KEY, CURRENCIES, ACCOUNT_TYPES, OBJECT_PRESETS, REASON_TEXT,
     uid, loadData, saveData, defaultData, defaultCategories, applyCategorySubcategories,
     addAccount, updateAccount, setAccountArchived, deleteAccount, accountHasTransactions,
     addCategory, renameCategory, setCategoryArchived, deleteCategory, categoryInUse,

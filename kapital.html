@@ -444,9 +444,9 @@
     max-width:640px;
   }
 </style>
-<link rel="stylesheet" href="mvp.css">
-<link rel="stylesheet" href="responsive.css">
-<script src="store.js"></script>
+<link rel="stylesheet" href="mvp.css?v=1">
+<link rel="stylesheet" href="responsive.css?v=1">
+<script src="store.js?v=1"></script>
 </head>
 <body>
 <div class="app">
@@ -592,6 +592,12 @@
 
 <script>
   let DATA = MBS.loadData();
+
+  window.addEventListener('storage', e => {
+    if (e.key === MBS.STORAGE_KEY && e.newValue !== e.oldValue) {
+      if (confirm('Данные изменились в другой открытой вкладке этого сайта. Обновить страницу? (Несохранённые изменения в этой вкладке будут потеряны)')) location.reload();
+    }
+  });
 
   function refreshAll() {
     const totals = MBS.computeTotalsByCurrency(DATA);

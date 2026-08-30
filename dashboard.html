@@ -521,9 +521,9 @@
     line-height:1;
   }
 </style>
-<link rel="stylesheet" href="mvp.css">
-<link rel="stylesheet" href="responsive.css">
-<script src="store.js"></script>
+<link rel="stylesheet" href="mvp.css?v=1">
+<link rel="stylesheet" href="responsive.css?v=1">
+<script src="store.js?v=1"></script>
 </head>
 <body>
 <div class="app">
@@ -639,6 +639,12 @@
 
 <script>
   const DATA = MBS.loadData();
+
+  window.addEventListener('storage', e => {
+    if (e.key === MBS.STORAGE_KEY && e.newValue !== e.oldValue) {
+      if (confirm('Данные изменились в другой открытой вкладке этого сайта. Обновить страницу?')) location.reload();
+    }
+  });
   let currentMonth = MBS.currentMonthKey();
 
   function escapeHtml(s){
