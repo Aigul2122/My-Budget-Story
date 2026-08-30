@@ -247,48 +247,6 @@
     transform:rotate(0deg);
   }
 
-  /* ===== currency badge rows (Деньги сейчас) ===== */
-  .currency-card{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:16px;
-    padding:14px 18px;
-    margin-bottom:10px;
-  }
-  .currency-card .cc-left{display:flex;align-items:center;gap:14px;}
-  .currency-badge{
-    width:44px;height:44px;
-    border-radius:50%;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:12px;
-    color:var(--paper);
-    flex-shrink:0;
-    line-height:1.1;
-  }
-  .currency-badge::after{
-    content:'🌿';
-    font-size:8px;
-    margin-top:1px;
-    filter:brightness(1.6);
-  }
-  .currency-badge.KZT{background:var(--ink);}
-  .currency-badge.USD{background:#8A9A5B;}
-  .currency-badge.EUR{background:#A9B98C;}
-  .cc-name{font-size:16px;color:var(--ink);}
-  .cc-sub{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
-  .cc-amount{
-    font-family:'Fraunces', serif;
-    font-size:19px;
-    font-weight:600;
-    display:flex;align-items:center;gap:8px;
-  }
-  .cc-chevron{color:var(--ink-soft);font-size:16px;}
-
   /* ===== STACKED: income, then expense, full width ===== */
   .breakdown{
     display:flex;
@@ -590,7 +548,8 @@
     <div class="cash-block" style="margin-top:28px;">
       <h2 style="text-align:center;">Деньги сейчас</h2>
       <div class="section-divider"><span class="leaf">🌿</span></div>
-      <div id="currencyCards"></div>
+      <div class="cash-totals" id="moneyTotalsByCurrency" style="justify-content:center;"></div>
+      <div style="text-align:center;margin-top:8px;"><a class="add-link" href="kapital.html">Открыть все счета →</a></div>
     </div>
 
     <div class="breakdown">
@@ -747,19 +706,22 @@
   const totals = MBS.computeTotalsByCurrency(DATA);
   const activeCurrencies = MBS.existingCurrencies(DATA);
 
-  const CURRENCY_LABELS = { KZT: 'Тенге', USD: 'Доллары', EUR: 'Евро' };
-  document.getElementById('currencyCards').innerHTML = activeCurrencies.map(cur => `
-    <a class="currency-card" href="kapital.html" style="text-decoration:none;color:inherit;">
-      <div class="cc-left">
-        <div class="currency-badge ${cur}">${cur}</div>
-        <div>
-          <div class="cc-name">${CURRENCY_LABELS[cur] || cur}</div>
-          ${totals.deposits[cur] ? `<div class="cc-sub">Доступно ${MBS.formatMoney(totals.available[cur] || 0, cur)} · На депозите ${MBS.formatMoney(totals.deposits[cur] || 0, cur)}</div>` : ''}
-        </div>
-      </div>
-      <div class="cc-amount">${MBS.formatMoney(totals.total[cur] || 0, cur)}<span class="cc-chevron">›</span></div>
-    </a>
-  `).join('');
+  document.getElementById('moneyTotalsByCurrency').innerHTML = `
+    <div class="cash-total">
+      <div class="cash-label">Доступно сейчас</div>
+      <div class="cash-value">${MBS.formatByCurrency(totals.available, activeCurrencies).join('<br>')}</div>
+      <div class="cash-total-note">Счета, кошелёк и сейфы</div>
+    </div>
+    <div class="cash-total">
+      <div class="cash-label">На депозитах</div>
+      <div class="cash-value">${MBS.formatByCurrency(totals.deposits, activeCurrencies).join('<br>')}</div>
+      <div class="cash-total-note">Только депозиты</div>
+    </div>
+    <div class="cash-total">
+      <div class="cash-label">Всего денег</div>
+      <div class="cash-value">${MBS.formatByCurrency(totals.total, activeCurrencies).join('<br>')}</div>
+      <div class="cash-total-note">Доступные средства плюс депозиты</div>
+    </div>`;
 
   // ----- быстрое добавление (компактная +, разворачивает варианты) -----
   const quickBar = document.querySelector('.quick-add-bar');
