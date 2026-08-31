@@ -5,7 +5,7 @@
 
 (function (global) {
   const STORAGE_KEY = 'mbs_data_v2';
-  const CURRENCIES = ['KZT', 'USD', 'EUR'];
+  const CURRENCIES = ['KZT', 'USD', 'EUR', 'TRY', 'AED'];
 
   const ACCOUNT_TYPES = {
     bank:    { label: 'Банковский счёт', countsInAvailable: true },
@@ -372,7 +372,8 @@
   function formatMoney(n, currency) {
     const rounded = Math.round(Number(n) || 0);
     const str = rounded.toLocaleString('ru-RU');
-    const symbol = currency === 'USD' ? '$' : currency === 'EUR' ? '€' : '₸';
+    const symbols = { USD: '$', EUR: '€', TRY: '₺', AED: 'د.إ' };
+    const symbol = symbols[currency] || '₸';
     return `${str} ${symbol}`;
   }
 

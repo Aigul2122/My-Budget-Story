@@ -446,7 +446,7 @@
 </style>
 <link rel="stylesheet" href="mvp.css?v=1">
 <link rel="stylesheet" href="responsive.css?v=1">
-<script src="store.js?v=1"></script>
+<script src="store.js?v=2"></script>
 </head>
 <body>
 <div class="app">
@@ -480,7 +480,6 @@
     <div class="subtabs">
       <a class="subtab active" href="#" data-view="obzor">Обзор</a>
       <a class="subtab" href="#" data-view="dengi">Деньги</a>
-      <a class="subtab" href="#" data-view="imushestvo">Имущество</a>
       <a class="subtab" href="#" data-view="dolgi">Долги</a>
     </div>
 
@@ -515,11 +514,7 @@
       <a class="add-link" href="#" id="addAccountBtn"><span class="plus">+</span> Добавить счёт</a>
     </div>
 
-    <!-- ===== ИМУЩЕСТВО / ДОЛГИ (пока статично) ===== -->
-    <div class="cap-panel" id="view-imushestvo" style="display:none;">
-      <h2>Имущество</h2>
-      <div class="mvp-empty">Недвижимость и общая собственность теперь в разделе «Семейный капитал».</div>
-    </div>
+    <!-- ===== ДОЛГИ (пока статично) ===== -->
     <div class="cap-panel" id="view-dolgi" style="display:none;">
       <h2>Долги</h2>
       <div class="mvp-empty">Раздел появится позже.</div>
@@ -681,7 +676,7 @@
       e.preventDefault();
       document.querySelectorAll('.subtab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      ['obzor','dengi','imushestvo','dolgi'].forEach(v => {
+      ['obzor','dengi','dolgi'].forEach(v => {
         document.getElementById('view-' + v).style.display = (v === tab.dataset.view) ? 'block' : 'none';
       });
     });
