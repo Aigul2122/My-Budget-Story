@@ -230,6 +230,8 @@
     max-width:640px;
   }
   .rec-actions{display:flex;gap:8px;}
+  .prop-col-label{font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:2px;}
+  .prop-col-value{font-family:'Fraunces', serif;font-size:17px;font-weight:600;white-space:nowrap;}
   .rec-btn{
     font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;
     border:1.5px solid var(--line);background:var(--paper);cursor:pointer;color:var(--ink);
@@ -243,7 +245,7 @@
 </style>
 <link rel="stylesheet" href="mvp.css?v=1">
 <link rel="stylesheet" href="responsive.css?v=1">
-<script src="store.js?v=2"></script>
+<script src="store.js?v=3"></script>
 </head>
 <body>
 <div class="app">
@@ -404,8 +406,8 @@
       </div>
       <div class="mvp-row2">
         <div class="mvp-field">
-          <label>Оценочная стоимость</label>
-          <input type="number" id="propValue" placeholder="0" step="0.01">
+          <label>Владелец</label>
+          <input type="text" id="propOwner" placeholder="Например, Совместно">
         </div>
         <div class="mvp-field">
           <label>Валюта</label>
@@ -416,6 +418,16 @@
             <option value="TRY">₺ Лира</option>
             <option value="AED">د.إ Дирхам</option>
           </select>
+        </div>
+      </div>
+      <div class="mvp-row2">
+        <div class="mvp-field">
+          <label>Цена покупки</label>
+          <input type="number" id="propPurchasePrice" placeholder="0" step="0.01">
+        </div>
+        <div class="mvp-field">
+          <label>Рыночная стоимость</label>
+          <input type="number" id="propValue" placeholder="0" step="0.01">
         </div>
       </div>
       <div class="mvp-field">
@@ -553,14 +565,30 @@
     }
     wrap.innerHTML = properties.map(p => {
       const archivedTag = p.archived ? ' <span class="op-tag">в архиве</span>' : '';
+      const purchasePrice = Number(p.purchasePrice) || 0;
+      const diff = (Number(p.value) || 0) - purchasePrice;
+      const diffColor = diff >= 0 ? 'var(--green)' : 'var(--rust)';
+      const diffSign = diff >= 0 ? '+ ' : '− ';
       return `
         <div class="cap-row" data-id="${p.id}">
           <div>
             <div class="cap-row-name">${escapeHtml(p.name)}${archivedTag}</div>
+            ${p.owner ? `<div class="cap-row-sub">Владелец: ${escapeHtml(p.owner)}</div>` : ''}
             ${p.note ? `<div class="cap-row-sub">${escapeHtml(p.note)}</div>` : ''}
           </div>
-          <div style="display:flex;align-items:center;gap:14px;">
-            <div class="cap-row-value">${MBS.formatMoney(p.value, p.currency)}</div>
+          <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+            <div>
+              <div class="prop-col-label">Цена покупки</div>
+              <div class="prop-col-value">${MBS.formatMoney(purchasePrice, p.currency)}</div>
+            </div>
+            <div>
+              <div class="prop-col-label">Рыночная стоимость</div>
+              <div class="prop-col-value">${MBS.formatMoney(p.value, p.currency)}</div>
+            </div>
+            <div>
+              <div class="prop-col-label">Разница</div>
+              <div class="prop-col-value" style="color:${diffColor};">${diffSign}${MBS.formatMoney(Math.abs(diff), p.currency)}</div>
+            </div>
             <div class="rec-actions">
               <button class="rec-btn" onclick="openEditProperty('${p.id}')">Изменить</button>
               <button class="rec-btn" onclick="togglePropertyArchive('${p.id}')">${p.archived ? 'Вернуть' : 'Архив'}</button>
@@ -665,6 +693,8 @@
     document.getElementById('propertyModalTitle').textContent = 'Изменить объект';
     document.getElementById('propId').value = p.id;
     document.getElementById('propName').value = p.name;
+    document.getElementById('propOwner').value = p.owner || '';
+    document.getElementById('propPurchasePrice').value = p.purchasePrice || 0;
     document.getElementById('propValue').value = p.value;
     document.getElementById('propCurrency').value = p.currency;
     document.getElementById('propNote').value = p.note || '';
@@ -689,6 +719,8 @@
     const id = document.getElementById('propId').value;
     const payload = {
       name: document.getElementById('propName').value,
+      owner: document.getElementById('propOwner').value,
+      purchasePrice: document.getElementById('propPurchasePrice').value,
       value: document.getElementById('propValue').value,
       currency: document.getElementById('propCurrency').value,
       note: document.getElementById('propNote').value

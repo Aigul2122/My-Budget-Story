@@ -171,11 +171,13 @@
 
   // ---------- PROPERTIES (недвижимость и другое имущество) ----------
 
-  function addProperty(data, { name, value, currency, note }) {
+  function addProperty(data, { name, owner, purchasePrice, value, currency, note }) {
     if (!name || !name.trim()) return { ok: false, reason: 'invalid_name' };
     data.properties.push({
       id: uid('prop'),
       name: name.trim(),
+      owner: (owner || '').trim(),
+      purchasePrice: Number(purchasePrice) || 0,
       value: Number(value) || 0,
       currency: CURRENCIES.includes(currency) ? currency : 'KZT',
       note: (note || '').trim(),
@@ -190,7 +192,10 @@
   function updateProperty(data, id, patch) {
     const p = data.properties.find(p => p.id === id);
     if (!p) return { ok: false, reason: 'not_found' };
-    Object.assign(p, patch, { value: Number(patch.value ?? p.value) || 0 });
+    Object.assign(p, patch, {
+      value: Number(patch.value ?? p.value) || 0,
+      purchasePrice: Number(patch.purchasePrice ?? p.purchasePrice) || 0
+    });
     saveData(data);
     return { ok: true };
   }
