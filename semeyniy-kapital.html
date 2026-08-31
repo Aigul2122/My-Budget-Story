@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Домашняя бухгалтерия — Личный капитал</title>
+<title>Домашняя бухгалтерия — Семейный капитал</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -104,225 +104,11 @@
   main{
     padding:40px 48px 60px 48px;
   }
-  .top-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    margin-bottom:32px;
-    flex-wrap:wrap;
-    gap:20px;
-  }
   h1{
     font-family:'Fraunces', serif;
     font-weight:600;
     font-size:34px;
     margin:0;
-  }
-  .period{
-    font-size:15px;
-    color:var(--ink-soft);
-    margin-top:6px;
-  }
-  .actions{
-    display:flex;
-    gap:12px;
-  }
-  .btn{
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:15px;
-    font-weight:600;
-    padding:12px 20px;
-    border-radius:10px;
-    border:1.5px solid var(--ink);
-    background:transparent;
-    color:var(--ink);
-    cursor:pointer;
-  }
-  .btn.primary{
-    background:var(--ink);
-    color:var(--paper);
-  }
-
-  /* ===== SUMMARY CARDS ===== */
-  .summary{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
-    margin-bottom:36px;
-  }
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:24px 26px;
-  }
-  .card-label{
-    font-size:14px;
-    text-transform:uppercase;
-    letter-spacing:0.05em;
-    color:var(--ink-soft);
-    margin-bottom:10px;
-  }
-  .card-value{
-    font-family:'Fraunces', serif;
-    font-size:32px;
-    font-weight:600;
-  }
-  .card-value.income{color:var(--green);}
-  .card-value.expense{color:var(--rust);}
-  .card-note{
-    font-size:14px;
-    color:var(--ink-soft);
-    margin-top:8px;
-  }
-
-  /* ===== TWO COLUMN: income / expense breakdown ===== */
-  .breakdown{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-    margin-bottom:36px;
-  }
-  .panel{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:26px 28px;
-  }
-  .panel h2{
-    font-family:'Fraunces', serif;
-    font-size:22px;
-    font-weight:600;
-    margin:0 0 4px 0;
-  }
-  .panel .panel-sub{
-    font-size:14px;
-    color:var(--ink-soft);
-    margin-bottom:20px;
-  }
-  .bar-row{
-    margin-bottom:16px;
-  }
-  .bar-row:last-child{margin-bottom:0;}
-  .bar-top{
-    display:flex;
-    justify-content:space-between;
-    font-size:15px;
-    margin-bottom:6px;
-  }
-  .bar-name{font-weight:600;}
-  .bar-figs{
-    color:var(--ink-soft);
-    font-variant-numeric:tabular-nums;
-  }
-  .bar-track{
-    height:10px;
-    border-radius:6px;
-    background:var(--paper-deep);
-    overflow:hidden;
-  }
-  .bar-fill{
-    height:100%;
-    border-radius:6px;
-  }
-  .bar-fill.income{background:var(--green);}
-  .bar-fill.expense{background:var(--rust);}
-  .group-label{
-    font-size:13px;
-    text-transform:uppercase;
-    letter-spacing:0.05em;
-    color:var(--gold);
-    font-weight:700;
-    margin:20px 0 10px 0;
-  }
-  .group-label:first-of-type{margin-top:0;}
-  .bar-row.subtotal{
-    margin-bottom:20px;
-    padding-top:4px;
-    border-top:1px solid var(--line);
-  }
-  .bar-row.subtotal .bar-name{color:var(--ink-soft);font-weight:600;}
-  .bar-row.subtotal .bar-figs{font-weight:700;color:var(--ink);}
-
-  /* ===== RECENT TRANSACTIONS ===== */
-  .panel.wide{
-    margin-bottom:36px;
-  }
-  table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:16px;
-  }
-  th{
-    text-align:left;
-    font-size:13px;
-    text-transform:uppercase;
-    letter-spacing:0.04em;
-    color:var(--ink-soft);
-    font-weight:600;
-    padding:0 0 12px 0;
-    border-bottom:1px solid var(--line);
-  }
-  td{
-    padding:14px 0;
-    border-bottom:1px solid var(--paper-deep);
-  }
-  td.who{font-weight:600;}
-  .tag{
-    display:inline-block;
-    padding:4px 10px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:600;
-  }
-  .tag.remont{background:var(--gold-soft);color:#7A5A18;}
-  .tag.salon{background:#EADFF0;color:#6B4A87;}
-  .tag.produkty{background:var(--green-soft);color:var(--green);}
-  .tag.kommunalka{background:#DCE6ED;color:#3D5E73;}
-  .tag.uncat{background:#EFEFEF;color:#888;border:1px dashed #BBB;}
-  td.amount{
-    text-align:right;
-    font-variant-numeric:tabular-nums;
-    font-weight:600;
-  }
-  td.amount.expense{color:var(--rust);}
-  td.amount.income{color:var(--green);}
-  .src{
-    font-size:13px;
-    color:var(--ink-soft);
-  }
-
-  /* ===== UPLOAD ZONE ===== */
-  .upload-zone{
-    border:2px dashed var(--line);
-    border-radius:var(--radius);
-    padding:36px;
-    text-align:center;
-    background:var(--card);
-  }
-  .upload-zone .icon-row{
-    display:flex;
-    justify-content:center;
-    gap:16px;
-    margin-bottom:18px;
-  }
-  .icon-btn{
-    width:56px;height:56px;
-    border-radius:50%;
-    background:var(--paper-deep);
-    display:flex;align-items:center;justify-content:center;
-    font-size:22px;
-  }
-  .upload-zone p{
-    font-size:15px;
-    color:var(--ink-soft);
-    margin:0;
-  }
-  .footnote{
-    text-align:center;
-    font-size:13px;
-    color:var(--ink-soft);
-    margin-top:40px;
   }
 
   /* ===== CAPITAL PAGE ===== */
@@ -443,6 +229,17 @@
     line-height:1.6;
     max-width:640px;
   }
+  .rec-actions{display:flex;gap:8px;}
+  .rec-btn{
+    font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;
+    border:1.5px solid var(--line);background:var(--paper);cursor:pointer;color:var(--ink);
+  }
+  .footnote{
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:40px;
+  }
 </style>
 <link rel="stylesheet" href="mvp.css?v=1">
 <link rel="stylesheet" href="responsive.css?v=1">
@@ -460,8 +257,8 @@
       <a class="tab" href="dashboard.html"><span class="num">01</span> Главная</a>
       <a class="tab" href="operatsii.html"><span class="num">02</span> Операции</a>
       <a class="tab" href="zagruzka.html"><span class="num">03</span> Загрузка</a>
-      <a class="tab active" href="kapital.html"><span class="num">04</span> Личный капитал</a>
-      <a class="tab" href="semeyniy-kapital.html"><span class="num">05</span> Семейный капитал</a>
+      <a class="tab" href="kapital.html"><span class="num">04</span> Личный капитал</a>
+      <a class="tab active" href="semeyniy-kapital.html"><span class="num">05</span> Семейный капитал</a>
       <a class="tab disabled" href="#" onclick="return false;"><span class="num">06</span> Аналитика <span class="soon-badge">скоро</span></a>
       <a class="tab" href="nastroiki.html"><span class="num">07</span> Настройки</a>
     </nav>
@@ -471,9 +268,9 @@
   </aside>
   <main>
     <div class="cap-hero">
-      <div class="eyebrow">Мой финансовый баланс</div>
-      <h1>Личный капитал</h1>
-      <div class="cap-label">Денежные средства</div>
+      <div class="eyebrow">Общая собственность</div>
+      <h1>Семейный капитал</h1>
+      <div class="cap-label">Деньги и имущество</div>
       <div class="cap-value" id="netWorthValue">0 ₸</div>
     </div>
 
@@ -486,14 +283,22 @@
 
     <!-- ===== ОБЗОР ===== -->
     <div class="cap-panel" id="view-obzor">
-      <h2>Структура капитала</h2>
+      <h2>Структура семейного капитала</h2>
 
       <div class="cap-row">
         <div>
           <div class="cap-row-name">Деньги</div>
-          <div class="cap-row-sub">Сейфы, наличные, счета, депозиты</div>
+          <div class="cap-row-sub">Семейные счета, карты, депозиты</div>
         </div>
         <div class="cap-row-value" id="obzorDengi">0 ₸</div>
+      </div>
+
+      <div class="cap-row">
+        <div>
+          <div class="cap-row-name">Имущество</div>
+          <div class="cap-row-sub">Недвижимость и другая общая собственность</div>
+        </div>
+        <div class="cap-row-value" id="obzorImushestvo">0 ₸</div>
       </div>
 
       <div class="cap-row">
@@ -503,40 +308,41 @@
         </div>
         <div class="cap-row-value debt">0 ₸</div>
       </div>
-      <div class="mvp-hint" style="margin-top:14px;">Недвижимость и другая общая собственность — в разделе «Семейный капитал». Долги пока не редактируются.</div>
     </div>
 
     <!-- ===== ДЕНЬГИ ===== -->
     <div class="cap-panel" id="view-dengi" style="display:none;">
       <h2>Итоги по валютам</h2>
       <div class="cash-totals" id="moneyTotalsByCurrency"></div>
-      <h2 style="margin-top:24px;">Счета, карты, кошельки, сейфы и депозиты</h2>
+      <h2 style="margin-top:24px;">Семейные счета, карты, депозиты</h2>
       <div id="accountsList"></div>
       <a class="add-link" href="#" id="addAccountBtn"><span class="plus">+</span> Добавить счёт</a>
     </div>
 
-    <!-- ===== ИМУЩЕСТВО / ДОЛГИ (пока статично) ===== -->
+    <!-- ===== ИМУЩЕСТВО ===== -->
     <div class="cap-panel" id="view-imushestvo" style="display:none;">
-      <h2>Имущество</h2>
-      <div class="mvp-empty">Недвижимость и общая собственность теперь в разделе «Семейный капитал».</div>
+      <h2>Недвижимость и другое имущество</h2>
+      <div id="propertiesList"></div>
+      <a class="add-link" href="#" id="addPropertyBtn"><span class="plus">+</span> Добавить объект</a>
     </div>
+
     <div class="cap-panel" id="view-dolgi" style="display:none;">
       <h2>Долги</h2>
       <div class="mvp-empty">Раздел появится позже.</div>
     </div>
 
     <div class="cap-note">
-      Доходы и расходы сюда не переносятся: они остаются в разделе «Операции». «Личный капитал» показывает только ваши личные счета — общие семейные деньги и недвижимость смотрите в «Семейном капитале».
+      Это общая собственность — счета, недвижимость и всё, что принадлежит семье, а не только вам. Личные счета и имущество остаются в разделе «Личный капитал». Доходы и расходы по семейным счетам вносятся в «Операциях», как обычно.
     </div>
 
-    <div class="footnote">My Budget Story · рабочий MVP · раздел «Капитал»</div>
+    <div class="footnote">My Budget Story · раздел «Семейный капитал»</div>
   </main>
   <nav class="bottom-tabbar">
     <a href="dashboard.html" class=""><span class="bt-icon">🏠</span>Главная</a>
     <a href="operatsii.html" class=""><span class="bt-icon">📋</span>Операции</a>
     <a href="zagruzka.html" class=""><span class="bt-icon">📥</span>Загрузка</a>
-    <a href="kapital.html" class="active"><span class="bt-icon">🏛</span>Личный</a>
-    <a href="semeyniy-kapital.html" class=""><span class="bt-icon">🏘</span>Семейный</a>
+    <a href="kapital.html" class=""><span class="bt-icon">🏛</span>Личный</a>
+    <a href="semeyniy-kapital.html" class="active"><span class="bt-icon">🏘</span>Семейный</a>
     <a href="#" class="" onclick="return false;" style="opacity:0.5;"><span class="bt-icon">📊</span>Аналитика</a>
     <a href="nastroiki.html" class=""><span class="bt-icon">⚙</span>Настройки</a>
   </nav>
@@ -545,12 +351,12 @@
 <!-- ===== MODAL: добавить / редактировать счёт ===== -->
 <div class="mvp-overlay" id="accountModal">
   <div class="mvp-modal">
-    <h3 id="accountModalTitle">Новый счёт</h3>
+    <h3 id="accountModalTitle">Новый семейный счёт</h3>
     <form id="accountForm">
       <input type="hidden" id="accId">
       <div class="mvp-field">
         <label>Название</label>
-        <input type="text" id="accName" placeholder="Например, Kaspi — текущий счёт" required>
+        <input type="text" id="accName" placeholder="Например, Общий семейный счёт" required>
       </div>
       <div class="mvp-row2">
         <div class="mvp-field">
@@ -584,6 +390,42 @@
   </div>
 </div>
 
+<!-- ===== MODAL: добавить / редактировать объект имущества ===== -->
+<div class="mvp-overlay" id="propertyModal">
+  <div class="mvp-modal">
+    <h3 id="propertyModalTitle">Новый объект</h3>
+    <form id="propertyForm">
+      <input type="hidden" id="propId">
+      <div class="mvp-field">
+        <label>Название</label>
+        <input type="text" id="propName" placeholder="Например, Квартира — Зелёные холмы" required>
+      </div>
+      <div class="mvp-row2">
+        <div class="mvp-field">
+          <label>Оценочная стоимость</label>
+          <input type="number" id="propValue" placeholder="0" step="0.01">
+        </div>
+        <div class="mvp-field">
+          <label>Валюта</label>
+          <select id="propCurrency">
+            <option value="KZT">₸ Тенге</option>
+            <option value="USD">$ Доллар</option>
+            <option value="EUR">€ Евро</option>
+          </select>
+        </div>
+      </div>
+      <div class="mvp-field">
+        <label>Заметка (необязательно)</label>
+        <input type="text" id="propNote" placeholder="Например, адрес или площадь">
+      </div>
+      <div class="mvp-actions-row">
+        <button type="button" class="mvp-btn" id="propertyCancel">Отмена</button>
+        <button type="submit" class="mvp-btn primary">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
   let DATA = MBS.loadData();
 
@@ -593,14 +435,18 @@
     }
   });
 
-  function personalAccounts() {
-    return DATA.accounts.filter(a => a.scope !== 'family');
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
-  function personalTotalsByCurrency() {
+  function familyAccounts() {
+    return DATA.accounts.filter(a => a.scope === 'family');
+  }
+
+  function familyTotalsByCurrency() {
     const available = {}, deposits = {}, total = {};
     MBS.CURRENCIES.forEach(c => { available[c] = 0; deposits[c] = 0; total[c] = 0; });
-    personalAccounts().forEach(a => {
+    familyAccounts().forEach(a => {
       const bal = MBS.computeAccountBalance(DATA, a.id);
       if (a.archived && bal === 0) return;
       const cfg = MBS.ACCOUNT_TYPES[a.type] || {};
@@ -611,42 +457,65 @@
     return { available, deposits, total };
   }
 
-  function existingPersonalCurrencies() {
-    const set = MBS.CURRENCIES.filter(c => personalAccounts().some(a => a.currency === c));
+  function familyProperties() {
+    return DATA.properties.filter(p => !p.archived);
+  }
+
+  function propertiesTotalsByCurrency() {
+    const total = {};
+    MBS.CURRENCIES.forEach(c => { total[c] = 0; });
+    familyProperties().forEach(p => {
+      const cur = MBS.CURRENCIES.includes(p.currency) ? p.currency : 'KZT';
+      total[cur] += Number(p.value) || 0;
+    });
+    return total;
+  }
+
+  function existingFamilyCurrencies() {
+    const set = MBS.CURRENCIES.filter(c =>
+      familyAccounts().some(a => a.currency === c) || familyProperties().some(p => p.currency === c)
+    );
     return set.length ? set : ['KZT'];
   }
 
   function refreshAll() {
-    const totals = personalTotalsByCurrency();
-    const cur = existingPersonalCurrencies();
-    document.getElementById('netWorthValue').innerHTML = MBS.formatByCurrency(totals.total, cur).join('<br>');
-    document.getElementById('obzorDengi').innerHTML = MBS.formatByCurrency(totals.total, cur).join('<br>');
+    const moneyTotals = familyTotalsByCurrency();
+    const propTotals = propertiesTotalsByCurrency();
+    const cur = existingFamilyCurrencies();
+
+    const combined = {};
+    MBS.CURRENCIES.forEach(c => { combined[c] = (moneyTotals.total[c] || 0) + (propTotals[c] || 0); });
+
+    document.getElementById('netWorthValue').innerHTML = MBS.formatByCurrency(combined, cur).join('<br>');
+    document.getElementById('obzorDengi').innerHTML = MBS.formatByCurrency(moneyTotals.total, cur).join('<br>');
+    document.getElementById('obzorImushestvo').innerHTML = MBS.formatByCurrency(propTotals, cur).join('<br>');
 
     document.getElementById('moneyTotalsByCurrency').innerHTML = `
       <div class="cash-total">
         <div class="cash-label">Доступно сейчас</div>
-        <div class="cash-value">${MBS.formatByCurrency(totals.available, cur).join('<br>')}</div>
+        <div class="cash-value">${MBS.formatByCurrency(moneyTotals.available, cur).join('<br>')}</div>
         <div class="cash-total-note">Счета, кошелёк и сейфы</div>
       </div>
       <div class="cash-total">
         <div class="cash-label">На депозитах</div>
-        <div class="cash-value">${MBS.formatByCurrency(totals.deposits, cur).join('<br>')}</div>
+        <div class="cash-value">${MBS.formatByCurrency(moneyTotals.deposits, cur).join('<br>')}</div>
         <div class="cash-total-note">Только депозиты</div>
       </div>
       <div class="cash-total">
         <div class="cash-label">Всего денег</div>
-        <div class="cash-value">${MBS.formatByCurrency(totals.total, cur).join('<br>')}</div>
+        <div class="cash-value">${MBS.formatByCurrency(moneyTotals.total, cur).join('<br>')}</div>
         <div class="cash-total-note">Доступные средства плюс депозиты</div>
       </div>`;
 
     renderAccounts();
+    renderProperties();
   }
 
   function renderAccounts() {
     const wrap = document.getElementById('accountsList');
-    const accounts = personalAccounts();
+    const accounts = familyAccounts();
     if (!accounts.length) {
-      wrap.innerHTML = '<div class="mvp-empty">Пока нет ни одного счёта — добавьте первый.</div>';
+      wrap.innerHTML = '<div class="mvp-empty">Пока нет ни одного семейного счёта — добавьте первый.</div>';
       return;
     }
     wrap.innerHTML = accounts.map(a => {
@@ -671,8 +540,31 @@
     }).join('');
   }
 
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function renderProperties() {
+    const wrap = document.getElementById('propertiesList');
+    const properties = DATA.properties;
+    if (!properties.length) {
+      wrap.innerHTML = '<div class="mvp-empty">Пока нет ни одного объекта — добавьте первый.</div>';
+      return;
+    }
+    wrap.innerHTML = properties.map(p => {
+      const archivedTag = p.archived ? ' <span class="op-tag">в архиве</span>' : '';
+      return `
+        <div class="cap-row" data-id="${p.id}">
+          <div>
+            <div class="cap-row-name">${escapeHtml(p.name)}${archivedTag}</div>
+            ${p.note ? `<div class="cap-row-sub">${escapeHtml(p.note)}</div>` : ''}
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div class="cap-row-value">${MBS.formatMoney(p.value, p.currency)}</div>
+            <div class="rec-actions">
+              <button class="rec-btn" onclick="openEditProperty('${p.id}')">Изменить</button>
+              <button class="rec-btn" onclick="togglePropertyArchive('${p.id}')">${p.archived ? 'Вернуть' : 'Архив'}</button>
+              <button class="rec-btn" style="border-color:var(--rust);color:var(--rust);" onclick="removeProperty('${p.id}')">Удалить</button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
   }
 
   // ----- subtabs -----
@@ -687,13 +579,13 @@
     });
   });
 
-  // ----- modal -----
+  // ----- account modal -----
   const modal = document.getElementById('accountModal');
   const form = document.getElementById('accountForm');
 
   document.getElementById('addAccountBtn').addEventListener('click', e => {
     e.preventDefault();
-    document.getElementById('accountModalTitle').textContent = 'Новый счёт';
+    document.getElementById('accountModalTitle').textContent = 'Новый семейный счёт';
     form.reset();
     document.getElementById('accId').value = '';
     modal.classList.add('open');
@@ -738,7 +630,7 @@
       type: document.getElementById('accType').value,
       currency: document.getElementById('accCurrency').value,
       initialBalance: document.getElementById('accInitial').value,
-      scope: 'personal'
+      scope: 'family'
     };
     if (id) {
       MBS.updateAccount(DATA, id, payload);
@@ -746,6 +638,63 @@
       MBS.addAccount(DATA, payload);
     }
     modal.classList.remove('open');
+    refreshAll();
+  });
+
+  // ----- property modal -----
+  const propModal = document.getElementById('propertyModal');
+  const propForm = document.getElementById('propertyForm');
+
+  document.getElementById('addPropertyBtn').addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('propertyModalTitle').textContent = 'Новый объект';
+    propForm.reset();
+    document.getElementById('propId').value = '';
+    propModal.classList.add('open');
+  });
+  document.getElementById('propertyCancel').addEventListener('click', () => propModal.classList.remove('open'));
+  propModal.addEventListener('click', e => { if (e.target === propModal) propModal.classList.remove('open'); });
+
+  window.openEditProperty = function (id) {
+    const p = DATA.properties.find(p => p.id === id);
+    if (!p) return;
+    document.getElementById('propertyModalTitle').textContent = 'Изменить объект';
+    document.getElementById('propId').value = p.id;
+    document.getElementById('propName').value = p.name;
+    document.getElementById('propValue').value = p.value;
+    document.getElementById('propCurrency').value = p.currency;
+    document.getElementById('propNote').value = p.note || '';
+    propModal.classList.add('open');
+  };
+
+  window.togglePropertyArchive = function (id) {
+    const p = DATA.properties.find(p => p.id === id);
+    if (!p) return;
+    MBS.setPropertyArchived(DATA, id, !p.archived);
+    refreshAll();
+  };
+
+  window.removeProperty = function (id) {
+    if (!confirm('Удалить этот объект?')) return;
+    MBS.deleteProperty(DATA, id);
+    refreshAll();
+  };
+
+  propForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const id = document.getElementById('propId').value;
+    const payload = {
+      name: document.getElementById('propName').value,
+      value: document.getElementById('propValue').value,
+      currency: document.getElementById('propCurrency').value,
+      note: document.getElementById('propNote').value
+    };
+    if (id) {
+      MBS.updateProperty(DATA, id, payload);
+    } else {
+      MBS.addProperty(DATA, payload);
+    }
+    propModal.classList.remove('open');
     refreshAll();
   });
 

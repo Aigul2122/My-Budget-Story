@@ -96,7 +96,7 @@
   }
 
   function defaultData() {
-    return { accounts: [], transactions: [], categories: defaultCategories() };
+    return { accounts: [], transactions: [], categories: defaultCategories(), properties: [] };
   }
 
   function loadData() {
@@ -107,6 +107,8 @@
       if (!Array.isArray(parsed.accounts)) parsed.accounts = [];
       if (!Array.isArray(parsed.transactions)) parsed.transactions = [];
       if (!Array.isArray(parsed.categories) || !parsed.categories.length) parsed.categories = defaultCategories();
+      if (!Array.isArray(parsed.properties)) parsed.properties = [];
+      parsed.accounts.forEach(a => { if (a.scope !== 'family') a.scope = 'personal'; });
       applyCategorySubcategories(parsed);
       return parsed;
     } catch (e) {
@@ -125,13 +127,14 @@
 
   // ---------- ACCOUNTS ----------
 
-  function addAccount(data, { name, type, currency, initialBalance }) {
+  function addAccount(data, { name, type, currency, initialBalance, scope }) {
     data.accounts.push({
       id: uid('acc'),
       name: (name || '').trim(),
       type,
       currency: CURRENCIES.includes(currency) ? currency : 'KZT',
       initialBalance: Number(initialBalance) || 0,
+      scope: scope === 'family' ? 'family' : 'personal',
       archived: false,
       createdAt: new Date().toISOString()
     });
@@ -162,6 +165,46 @@
   function deleteAccount(data, id) {
     if (accountHasTransactions(data, id)) return { ok: false, reason: 'in_use' };
     data.accounts = data.accounts.filter(a => a.id !== id);
+    saveData(data);
+    return { ok: true };
+  }
+
+  // ---------- PROPERTIES (недвижимость и другое имущество) ----------
+
+  function addProperty(data, { name, value, currency, note }) {
+    if (!name || !name.trim()) return { ok: false, reason: 'invalid_name' };
+    data.properties.push({
+      id: uid('prop'),
+      name: name.trim(),
+      value: Number(value) || 0,
+      currency: CURRENCIES.includes(currency) ? currency : 'KZT',
+      note: (note || '').trim(),
+      scope: 'family',
+      archived: false,
+      createdAt: new Date().toISOString()
+    });
+    saveData(data);
+    return { ok: true };
+  }
+
+  function updateProperty(data, id, patch) {
+    const p = data.properties.find(p => p.id === id);
+    if (!p) return { ok: false, reason: 'not_found' };
+    Object.assign(p, patch, { value: Number(patch.value ?? p.value) || 0 });
+    saveData(data);
+    return { ok: true };
+  }
+
+  function setPropertyArchived(data, id, archived) {
+    const p = data.properties.find(p => p.id === id);
+    if (!p) return { ok: false, reason: 'not_found' };
+    p.archived = !!archived;
+    saveData(data);
+    return { ok: true };
+  }
+
+  function deleteProperty(data, id) {
+    data.properties = data.properties.filter(p => p.id !== id);
     saveData(data);
     return { ok: true };
   }
@@ -356,6 +399,7 @@
       throw new Error('Файл не похож на резервную копию My Budget Story');
     }
     if (!Array.isArray(parsed.categories) || !parsed.categories.length) parsed.categories = defaultCategories();
+    if (!Array.isArray(parsed.properties)) parsed.properties = [];
     return parsed;
   }
 
@@ -393,6 +437,7 @@
     STORAGE_KEY, CURRENCIES, ACCOUNT_TYPES, OBJECT_PRESETS, REASON_TEXT,
     uid, loadData, saveData, defaultData, defaultCategories, applyCategorySubcategories,
     addAccount, updateAccount, setAccountArchived, deleteAccount, accountHasTransactions,
+    addProperty, updateProperty, setPropertyArchived, deleteProperty,
     addCategory, renameCategory, setCategoryArchived, deleteCategory, categoryInUse,
     canTransfer, addTransaction, updateTransaction, deleteTransaction,
     computeAccountBalance, computeTotalsByCurrency, computeMonthSummaryByCurrency, existingCurrencies,

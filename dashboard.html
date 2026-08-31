@@ -537,9 +537,10 @@
       <a class="tab active" href="dashboard.html"><span class="num">01</span> Главная</a>
       <a class="tab" href="operatsii.html"><span class="num">02</span> Операции</a>
       <a class="tab" href="zagruzka.html"><span class="num">03</span> Загрузка</a>
-      <a class="tab disabled" href="#" onclick="return false;"><span class="num">04</span> Аналитика <span class="soon-badge">скоро</span></a>
-      <a class="tab" href="kapital.html"><span class="num">05</span> Капитал</a>
-      <a class="tab" href="nastroiki.html"><span class="num">06</span> Настройки</a>
+      <a class="tab" href="kapital.html"><span class="num">04</span> Личный капитал</a>
+      <a class="tab" href="semeyniy-kapital.html"><span class="num">05</span> Семейный капитал</a>
+      <a class="tab disabled" href="#" onclick="return false;"><span class="num">06</span> Аналитика <span class="soon-badge">скоро</span></a>
+      <a class="tab" href="nastroiki.html"><span class="num">07</span> Настройки</a>
     </nav>
     <div class="sidebar-foot">
       Обновлено сегодня, 06:40
@@ -631,8 +632,9 @@
     <a href="dashboard.html" class="active"><span class="bt-icon">🏠</span>Главная</a>
     <a href="operatsii.html" class=""><span class="bt-icon">📋</span>Операции</a>
     <a href="zagruzka.html" class=""><span class="bt-icon">📥</span>Загрузка</a>
+    <a href="kapital.html" class=""><span class="bt-icon">🏛</span>Личный</a>
+    <a href="semeyniy-kapital.html" class=""><span class="bt-icon">🏘</span>Семейный</a>
     <a href="#" class="" onclick="return false;" style="opacity:0.5;"><span class="bt-icon">📊</span>Аналитика</a>
-    <a href="kapital.html" class=""><span class="bt-icon">🏛</span>Капитал</a>
     <a href="nastroiki.html" class=""><span class="bt-icon">⚙</span>Настройки</a>
   </nav>
 </div>
@@ -646,6 +648,17 @@
     }
   });
   let currentMonth = MBS.currentMonthKey();
+
+  // «Главная» показывает только личные деньги — семейные счета и операции
+  // по ним смотрите в «Семейном капитале».
+  function personalData() {
+    const accounts = DATA.accounts.filter(a => a.scope !== 'family');
+    const ids = new Set(accounts.map(a => a.id));
+    const transactions = DATA.transactions.filter(t => t.type === 'transfer'
+      ? ids.has(t.fromAccountId) && ids.has(t.toAccountId)
+      : ids.has(t.accountId));
+    return { accounts, transactions, categories: DATA.categories, properties: [] };
+  }
 
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -662,7 +675,7 @@
 
   function renderBreakdown(type, containerId) {
     const el = document.getElementById(containerId);
-    const monthTx = DATA.transactions.filter(t => t.type === type && MBS.monthKey(t.date) === currentMonth);
+    const monthTx = personalData().transactions.filter(t => t.type === type && MBS.monthKey(t.date) === currentMonth);
     if (!monthTx.length) {
       el.innerHTML = '<div class="bar-row subtotal"><div class="bar-top"><span class="bar-name" style="color:var(--ink-soft);">нет данных за этот месяц</span></div></div>';
       return;
@@ -697,8 +710,9 @@
     document.getElementById('monthTitle').textContent = MBS.monthLabel(currentMonth);
 
     // ----- Карточки месяца (по валютам, переводы не учитываются) -----
-    const monthSummary = MBS.computeMonthSummaryByCurrency(DATA, currentMonth);
-    const hasThisMonth = DATA.transactions.some(t => MBS.monthKey(t.date) === currentMonth);
+    const pData = personalData();
+    const monthSummary = MBS.computeMonthSummaryByCurrency(pData, currentMonth);
+    const hasThisMonth = pData.transactions.some(t => MBS.monthKey(t.date) === currentMonth);
 
     document.getElementById('sumIncome').innerHTML = MBS.formatByCurrency(monthSummary.income).join('<br>');
     document.getElementById('sumExpense').innerHTML = MBS.formatByCurrency(monthSummary.expense).join('<br>');
@@ -719,7 +733,7 @@
 
     // ----- Последние операции месяца -----
     const recentBody = document.getElementById('recentOpsBody');
-    const recent = DATA.transactions
+    const recent = pData.transactions
       .filter(t => MBS.monthKey(t.date) === currentMonth)
       .sort((a,b) => (b.date||'').localeCompare(a.date||''))
       .slice(0, 6);
@@ -748,8 +762,8 @@
   document.getElementById('nextMonthBtn').addEventListener('click', () => { currentMonth = MBS.shiftMonth(currentMonth, 1); renderMonth(); });
 
   // ----- Деньги сейчас (не зависит от месяца — это остатки на сегодня, по валютам) -----
-  const totals = MBS.computeTotalsByCurrency(DATA);
-  const activeCurrencies = MBS.existingCurrencies(DATA);
+  const totals = MBS.computeTotalsByCurrency(personalData());
+  const activeCurrencies = MBS.existingCurrencies(personalData());
 
   const CURRENCY_LABELS = { KZT: 'Тенге', USD: 'Доллары', EUR: 'Евро' };
   document.getElementById('currencyCards').innerHTML = activeCurrencies.map(cur => `
